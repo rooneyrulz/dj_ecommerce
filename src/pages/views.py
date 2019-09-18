@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 # Landing Page View
 def landing_page_view(request):
-  return HttpResponse('<h1>Landing Page</h1>')
+  return render(request, 'base.html', {})
 
 
 # About Page View
