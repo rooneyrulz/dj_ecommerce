@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     # Third Party Apps
 
     # Own Apps
-    'pages.apps.PagesConfig'
+    'pages.apps.PagesConfig',
+    'products.apps.ProductsConfig',
+    'users.apps.UsersConfig',
+    'cart.apps.CartConfig'
 ]
 
 MIDDLEWARE = [
