@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 class Product(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -11,3 +12,13 @@ class Product(models.Model):
 
   def __str__(self):
     return self.name
+
+  def get_absolute_url(self, *args, **kwargs):
+    return reverse('products:product_details_view', kwargs={'pk':self.id})
+
+  def get_edit_url(self, *args, **kwargs):
+    return reverse('products:product_update_view', kwargs={'pk':self.id})
+
+  
+  def get_add_to_cart_url(self, *args, **kwargs):
+    return reverse('products:product_add_to_cart_view', kwargs={'pk':self.id})
