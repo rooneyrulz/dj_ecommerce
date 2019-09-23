@@ -3,7 +3,9 @@ from django.urls import reverse
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(
+      max_length=100
+    )
     price = models.DecimalField(
       max_digits=1000,
       decimal_places=2
@@ -13,9 +15,16 @@ class Product(models.Model):
       blank=True,
       null=True
     )
-    stock = models.IntegerField(default=1)
-    published_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='product_images')
+    provide_by = models.CharField(
+      max_length=120,
+      default='King Pro Pvt Ltd'
+    )
+    published_at = models.DateTimeField(
+      auto_now_add=True
+    )
+    image = models.ImageField(
+      upload_to='product_images'
+    )
 
     def __str__(self):
         return self.name

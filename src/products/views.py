@@ -15,7 +15,11 @@ def product_list_view(request):
 
 # Products details view
 def product_details_view(request, pk):
-	return render(request, 'products/product_details.html', {})
+	product = Product.objects.get(id=pk)
+	context = {
+		'product': product
+	}
+	return render(request, 'products/product_details.html', context)
 
 
 # Product create view

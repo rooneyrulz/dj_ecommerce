@@ -1,5 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Product Details</h1>
+<header class="mb-5">
+  <h3 style="font-weight: bold" class="page-heading">Product Details</h3>
+  <hr>
+</header>
+<div style="display: grid; grid-template-columns: 1fr" class="p-display-grid">
+  {% if not product %}
+  <p class="lead text-muted">No products added yet..<p>
+      {% else %}
+      <div class="card" style="">
+        <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">
+            <strong>Name</strong>
+            <span class="float-right">{{product.name}}</span>
+          </h5>
+          <p class="card-text lead">
+            <strong>Price</strong>
+            <span class="float-right">${{product.price}}</span>
+          </p>
+          <p class="card-text lead">
+            <strong>Description</strong>
+            <span class="float-right">{{product.description}}</span>
+          </p>
+          <p class="card-text lead">
+            <strong>Provide By</strong>
+            <span class="float-right">{{product.provide_by}}</span>
+          </p>
+        </div>
+      </div>
+      {% endif %}
+</div>
 {% endblock %}

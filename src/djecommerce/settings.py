@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third Party Apps
+    'crispy_forms',
 
     # Own Apps
     'pages.apps.PagesConfig',
@@ -109,6 +109,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# CRISPY FORMS PACK
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # Internationalization
