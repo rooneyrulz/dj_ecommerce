@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = '/users/sign-in'
+
+LOGIN_REDIRECT_URL = '/dashboard'
+
 # Application definition
 
 INSTALLED_APPS = [

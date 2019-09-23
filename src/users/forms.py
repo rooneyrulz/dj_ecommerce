@@ -1,9 +1,11 @@
-from django.conf import settings
 from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 
-class UserForm(forms.ModelForm):
+class UserSignUpForm(UserCreationForm):
+    email = forms.EmailField()
 
     class Meta:
-        model = settings.AUTH_USER_MODEL
-        fields = ['username', 'password', 'password2']
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
