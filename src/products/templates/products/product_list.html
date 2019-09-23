@@ -2,4 +2,7 @@
 
 {% block content %}
   <h1>Product List View</h1>
+  {% for product in products %}
+    <p>{{ product.name }}</p>
+  {% endfor %}
 {% endblock %}
