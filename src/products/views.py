@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import render, get_object_or_404
 
 from .models import Product
 from .forms import ProductForm
@@ -8,6 +9,7 @@ from .forms import ProductForm
 def product_list_view(request):
 	products = Product.objects.all()
 	context = {
+		'title': 'Products',
 		'products': products
 	}
 	return render(request, 'products/product_list.html', context)
@@ -15,8 +17,9 @@ def product_list_view(request):
 
 # Products details view
 def product_details_view(request, pk):
-	product = Product.objects.get(id=pk)
+	product = get_object_or_404(Product, id=pk)
 	context = {
+		'title': 'Product Details',
 		'product': product
 	}
 	return render(request, 'products/product_details.html', context)
@@ -29,6 +32,7 @@ def product_create_view(request):
 		form.save()
 		form = ProductForm()
 	context = {
+		'title': 'Product Create',
 		'form': form
 	}
 	return render(request, 'products/product_create.html', context)
