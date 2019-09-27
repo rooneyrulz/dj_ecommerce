@@ -19,6 +19,14 @@
 <body>
   {% include 'layouts/navbar.html' %}
 
+  {% if messages %}
+    <div class='container'>
+      {% for message in messages %}
+        <div class='alert alert-{{message.tags}}'>{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <div class="container my-5">
     {% block content %}
       replace me

@@ -1,8 +1,12 @@
+from django.contrib.auth.views import login_required
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 
 from .models import Product
-from .forms import ProductForm
+from cart.models import Cart
+
+from .forms import ProductForm, CartForm
 
 
 # List out all products
@@ -44,8 +48,21 @@ def product_update_view(request, pk):
 
 
 # Product add to cart view
+@login_required()
 def product_add_to_cart_view(request, pk):
-	return render(request, 'products/product_add_to_cart.html', {})
+	product = get_object_or_404(Product, id=pk)
+	form = CartForm(request.POST or None)
+	if form.is_valid():
+		item = form.save(commit=False)
+		item.product = product
+		item.user = request.user
+		form.save()
+		messages.success(request, 'Item has been added to your cart!')
+	context = {
+		'form': form,
+		'product': product
+	}
+	return render(request, 'products/product_add_to_cart.html', context)
 
 
 # Product delete view

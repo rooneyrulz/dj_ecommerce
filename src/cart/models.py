@@ -5,7 +5,7 @@ from products.models import Product
 
 
 class Cart(models.Model):
-    product = models.ForeignKey(
+    product = models.OneToOneField(
         Product,
         default=1,
         on_delete=models.CASCADE

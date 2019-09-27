@@ -1,5 +1,22 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-  <h1>Product Add To Cart</h1>
+<h1>Product Add To Cart</h1>
+<div class="card">
+  <div class='row'>
+  <div class='col-sm-6'>
+    <img style="height: 350px" class="" src="{{ product.image.url }}" alt="">
+  </div>
+  <div class='col-sm-6'>
+    <div class="card-body">
+      <p class='card-text'>{{product.name}}</p>
+      <p class='card-text'>${{product.price}}</p>
+      <form method="POST" action=""> {% csrf_token %}
+        {{ form|crispy }}
+        <button type='submit' class='btn btn-outline-info'>Add to Cart</button>
+      </form>
+    </div>
+  </div></div>
+</div>
 {% endblock %}
