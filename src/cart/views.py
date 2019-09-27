@@ -5,7 +5,7 @@ from .models import Cart
 
 
 # Cart List View
-# @login_required()
+@login_required()
 def cart_list_view(request):
     products = Cart.objects.filter(user=request.user)
     context = {

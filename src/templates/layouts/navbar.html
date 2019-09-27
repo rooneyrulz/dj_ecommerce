@@ -7,9 +7,15 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/">Home</a>
-      </li>
+      {% if request.user %}
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Dashboard</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+      {% endif %}
       <li class="nav-item">
         <a class="nav-link" href="/profiles">Profiles</a>
       </li>
@@ -26,10 +32,15 @@
           User Management
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/users/sign-up">Sign Up</a>
-          <a class="dropdown-item" href="/users/sign-in">Sign In</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Profile</a>
+          {% if request.user %}
+            <a class="dropdown-item" href="/users/sign-out">Logout</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Profile</a>
+          {% else %}
+            <a class="dropdown-item" href="/users/sign-up">Sign Up</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/users/sign-in">Sign In</a>
+          {% endif %}
         </div>
       </li>
     </ul>

@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 LOGIN_URL = '/users/sign-in'
 
-LOGIN_REDIRECT_URL = '/dashboard'
+LOGIN_REDIRECT_URL = '/products'
 
 # Application definition
 
