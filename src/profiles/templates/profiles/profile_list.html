@@ -16,7 +16,7 @@
       <p class="card-text">{{ profile.location }}</p>
     </div>
     <div class="">
-      <a href="" class="btn btn-light">Visit</a>
+      <a href="{{ profile.get_absolute_url }}" class="btn btn-light">Visit</a>
     </div>
   </div>
   {% endfor %}

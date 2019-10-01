@@ -6,6 +6,7 @@ from .models import Profile, Experience, Education, Social
 class ProfileAdmin(admin.ModelAdmin):
     list_display = [
         'user',
+        'profession',
         'company',
         'location',
         'status',

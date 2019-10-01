@@ -1,6 +1,32 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils import timezone
+
+
+GENDER_CHOICES = [
+  ('Male', 'Male'),
+  ('Female', 'Female')
+]
+
+STATUS_CHOICES = [
+  ('Married', 'Married'),
+  ('Single', 'Single')
+]
+
+PROFESSION_CHOICES = [
+  ('Student or Learning', 'Student or Learning'),
+  ('Junior Developer', 'Junior Developer'),
+  ('Senior Developer', 'Senior Developer'),
+  ('Developer', 'Developer'),
+  ('Manager', 'Manager'),
+  ('Instructor or Teacher', 'Instructor or Teacher'),
+  ('Intern', 'Intern'),
+  ('Bussiness Man', 'Bussiness Man'),
+  ('Digital Marketer', 'Digital Marketer'),
+  ('Data Scientist', 'Data Scientist'),
+  ('Other', 'Other')
+]
 
 
 class Profile(models.Model):
@@ -11,6 +37,11 @@ class Profile(models.Model):
     )
     name = models.CharField(
       max_length=120,
+    )
+    profession = models.CharField(
+      max_length=200,
+      choices=PROFESSION_CHOICES,
+      default=1
     )
     company = models.CharField(
       max_length=150,
@@ -27,8 +58,9 @@ class Profile(models.Model):
       default='USA'
     )
     gender = models.CharField(
-      max_length=50,
-      default='Male'
+      max_length=6,
+      choices=GENDER_CHOICES,
+      default=1
     )
     age = models.IntegerField(
       blank=True,
@@ -36,7 +68,8 @@ class Profile(models.Model):
     )
     status = models.CharField(
       max_length=50,
-      default='Married'
+      choices=STATUS_CHOICES,
+      default=1
     )
     skills = models.TextField(
       default='Marketing, Programming'
@@ -50,8 +83,14 @@ class Profile(models.Model):
       default='default.jpg'
     )
     created_at = models.DateTimeField(
-      auto_now_add=True,
+      auto_now_add=True
     )
+
+    def __str__(self, *args, **kwargs):
+        return self.name
+
+    def get_absolute_url(self, *args, **kwargs):
+        return reverse("profiles:profile_detail", kwargs={"pk": self.pk})
 
 
 class Experience(models.Model):

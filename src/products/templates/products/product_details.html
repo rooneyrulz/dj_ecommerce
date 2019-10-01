@@ -3,33 +3,31 @@
 {% block content %}
 <header class="mb-5">
   <h3 style="font-weight: bold" class="page-heading">Product Details</h3>
-  <hr>
 </header>
-<div style="display: grid; grid-template-columns: 1fr" class="p-display-grid">
-  {% if not product %}
-  <p class="lead text-muted">No products added yet..<p>
-      {% else %}
-      <div class="card" style="">
-        <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">
-            <strong>Name</strong>
-            <span class="float-right">{{product.name}}</span>
-          </h5>
-          <p class="card-text lead">
-            <strong>Price</strong>
-            <span class="float-right">${{product.price}}</span>
-          </p>
-          <p class="card-text lead">
-            <strong>Description</strong>
-            <span class="float-right">{{product.description}}</span>
-          </p>
-          <p class="card-text lead">
-            <strong>Provide By</strong>
-            <span class="float-right">{{product.provide_by}}</span>
-          </p>
-        </div>
-      </div>
-      {% endif %}
+<br>
+{% if product %}
+<div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1rem;" class="card">
+  <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title text-center">
+      <strong>{{product.name}}</strong>
+    </h5>
+    <p class="card-text">
+      ${{product.price}}
+    </p>
+    <p class="card-text">
+      {{product.description}}
+    </p>
+    <p class="card-text">
+      {{product.published_at}}
+    </p>
+    <hr>
+    <p class="card-text">
+      <strong>{{product.provide_by}}</strong>
+    </p>
+  </div>
 </div>
-{% endblock %}
+{% else %}
+<p class="lead text-muted">No products added yet..<p>
+    {% endif %}
+    {% endblock %}
