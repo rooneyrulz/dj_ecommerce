@@ -1,5 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Profiles</h1>
+<header>
+  <h3 style="font-weight: bold">Profiles</h3>
+</header>
+<br>
+<div class='profiles'>
+  {% if profiles %}
+  {% for profile in profiles %}
+  <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; grid-gap: 1rem; align-items: center; margin-bottom: 1em"
+    class="card text-left">
+    <img style="width: 135px" class="card-img-top" src="{{profile.image.url}}" alt="">
+    <div class="card-body">
+      <h4 class="card-title">{{ profile.name }}</h4>
+      <p class="card-text">{{ profile.location }}</p>
+    </div>
+    <div class="">
+      <a href="" class="btn btn-light">Visit</a>
+    </div>
+  </div>
+  {% endfor %}
+  {% else %}
+  <p class='lead text-muted'>No profiles found..</p>
+  {% endif %}
+</div>
 {% endblock %}
