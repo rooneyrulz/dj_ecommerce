@@ -52,12 +52,21 @@ def product_update_view(request, pk):
 def product_add_to_cart_view(request, pk):
 	product = get_object_or_404(Product, id=pk)
 	form = CartForm(request.POST or None)
+	
 	if form.is_valid():
-		item = form.save(commit=False)
-		item.product = product
-		item.user = request.user
-		form.save()
-		messages.success(request, 'Item has been added to your cart!')
+			try:
+				cart_item = Cart.objects.get(product=pk, user=request.user)
+				if cart_item:
+					messages.error(request, 'Item is already in your cart!')
+					return redirect('/products')
+			except Cart.DoesNotExist:
+				item = form.save(commit=False)
+				item.product = product
+				item.user = request.user
+				form.save()
+				messages.success(request, 'Item has been added to your cart!')
+				return redirect('/products')
+	
 	context = {
 		'form': form,
 		'product': product

@@ -25,7 +25,12 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link" href="/cart">Cart</a>
+        <a class="nav-link" href="/cart">
+          Cart
+          {% if cart_item_count %}
+            <span style="border-radius: 2rem" class='bg-secondary py-1 px-2'>{{cart_item_count}}</span>
+          {% endif %}
+        </a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

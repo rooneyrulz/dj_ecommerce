@@ -2,7 +2,10 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h1>Product Add To Cart</h1>
+<header class="mb-5">
+  <h3 style="font-weight: bold" class="page-heading">Add To Cart</h3>
+  <hr>
+</header>
 <div class="card">
   <div class='row'>
   <div class='col-sm-6'>
@@ -10,8 +13,8 @@
   </div>
   <div class='col-sm-6'>
     <div class="card-body">
-      <p class='card-text'>{{product.name}}</p>
-      <p class='card-text'>${{product.price}}</p>
+      <p class='lead'>{{product.name}}</p>
+      <p class='lead'>${{product.price}}</p>
       <form method="POST" action=""> {% csrf_token %}
         {{ form|crispy }}
         <button type='submit' class='btn btn-outline-info'>Add to Cart</button>
