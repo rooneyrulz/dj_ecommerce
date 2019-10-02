@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils import timezone
 
 
@@ -31,7 +31,7 @@ PROFESSION_CHOICES = [
 
 class Profile(models.Model):
     user = models.OneToOneField(
-      User,
+      settings.AUTH_USER_MODEL,
       default=1,
       on_delete=models.CASCADE
     )

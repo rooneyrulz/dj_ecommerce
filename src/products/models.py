@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.conf import settings
 
 
 class Product(models.Model):
@@ -46,3 +47,19 @@ class Product(models.Model):
           'products:product_add_to_cart_view',
           kwargs={'pk': self.id}
         )
+
+
+class Like(models.Model):
+    user = models.ForeignKey(
+      settings.AUTH_USER_MODEL,
+      default=1,
+      on_delete=models.CASCADE
+    )
+    product = models.ForeignKey(
+      Product,
+      default=1,
+      on_delete=models.CASCADE
+    )
+    liked_at = models.DateTimeField(
+      auto_now_add=True
+    )

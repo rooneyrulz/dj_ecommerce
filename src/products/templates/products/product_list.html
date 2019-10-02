@@ -7,21 +7,35 @@
 </header>
 <div class="p-display-grid">
   {% if not products %}
-    <p class="lead text-muted">No products added yet..<p>
-  {% else %}
-    {% for product in products %}
-  <div class="card" style="">
-    <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">{{product.name}}</h5>
-      <p class="card-text">${{product.price}}</p>
-      <div class="btn-group">
-        <a href="{{product.get_absolute_url}}" class="btn btn-outline-primary">Details</a>
-        <a href="{{product.get_add_to_cart_url}}" class="btn btn-primary">Add to Cart</a>
+  <p class="lead text-muted">No products added yet..<p>
+      {% else %}
+      {% for product in products %}
+      <div class="card">
+        <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text">${{product.price}}</p>
+          <div class="text-center">
+            <a href="" class="btn btn-sm btn-outline-info">
+              Link
+              {% for like in product.like_set.all %}
+              <span style="border-radius: 1rem" class="px-2 bg-info text-light">
+                {{forloop.counter}}
+              </span>
+              {% endfor %}
+            </a>
+            <a href="" class="btn btn-sm btn-outline-info">
+              Unlink
+            </a>
+          </div>
+          <br>
+          <div class="btn-group">
+            <a href="{{product.get_absolute_url}}" class="btn btn-outline-primary">Details</a>
+            <a href="{{product.get_add_to_cart_url}}" class="btn btn-primary">Add to Cart</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  {% endfor %}
-  {% endif %}
+      {% endfor %}
+      {% endif %}
 </div>
 {% endblock %}
