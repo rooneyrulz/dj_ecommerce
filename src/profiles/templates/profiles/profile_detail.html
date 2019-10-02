@@ -1,22 +1,82 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<header>
+<header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
   <h3 style="font-weight: bold">Profile</h3>
+  {% if request.user.is_authenticated and profile.user == request.user %}
+    <div class='btn-group'>
+      <a href="#" class="btn btn-info">Edit Profile</a>
+    </div>
+  {% endif %}
 </header>
 <br>
 <div class='profile'>
   {% if profile %}
-  <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1rem; justify-content: center">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1rem; ">
     <div class="profile-left">
-      <img style="height: 500px" src="{{profile.image.url}}" alt="">
+      <img style="height: 450px; border-radius: 15rem" src="{{profile.image.url}}" alt="">
+      <br>
+      <br>
       <h4>{{profile.name}}</h4>
-      <p>{{profile.company}}</p>
-      <a href="#" class="btn btn-lg btn-info">Add Experiences</a>
-      <a href="#" class="btn btn-lg btn-dark">Add Educations</a>
+      <p class="lead">{{profile.location}}</p>
+      {% if request.user.is_authenticated and profile.user == request.user %}
+      <div class='btn-group'>
+        <a href="#" class="btn btn-info">Experiences</a>
+        <a href="#" class="btn btn-dark">Educations</a>
+      </div>
+      {% endif %}
     </div>
     <div class="profile-right">
-      Profile details here
+      <ul class="lis-group">
+        <li class="list-group-item">
+          <h4 class="text-center">{{profile.profession}}</h4>
+        </li>
+        <hr>
+        <li class="list-group-item">
+          <strong>Company</strong>
+          <span class="float-right">{{profile.company}}</span>
+        </li>
+        <li class="list-group-item">
+          <strong>Website</strong>
+          <span class="float-right">{{profile.website}}</span>
+        </li>
+        <li class="list-group-item">
+          <strong>Gender</strong>
+          <span class="float-right">{{profile.gender}}</span>
+        </li>
+        <li class="list-group-item">
+          <strong>Age</strong>
+          <span class="float-right">{{profile.age}}</span>
+        </li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <strong>Skills</strong>
+        </li>
+        {% for skill in profile.skills.split %}
+        <li class="list-group-item">
+          <strong>{{forloop.counter}}.</strong>
+          <span class=""> {{skill}}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <div class="profile-about">
+    <div class="text-center">
+      <h4>About</h4>
+      <p class="lead">{{profile.bio}}</p>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <div class="profile-social">
+    <div class="text-center">
+      <h4>Follow Me</h4>
     </div>
   </div>
   {% else %}

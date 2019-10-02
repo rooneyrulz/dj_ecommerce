@@ -115,3 +115,9 @@ class Social(models.Model):
       default=1,
       on_delete=models.CASCADE
     )
+    youtube = models.URLField(blank=True, null=True)
+    twitter = models.URLField(blank=True, null=True)
+    facebook = models.URLField(blank=True, null=True)
+    linkedin = models.URLField(blank=True, null=True)
+    instagram = models.URLField(blank=True, null=True)
+    github = models.URLField(blank=True, null=True)
