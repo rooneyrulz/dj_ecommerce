@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+  <h3 style="font-weight: bold">Experiences</h3>
+</header>
+<br>
+<div class='profile'>
+  {% comment %} <form method="POST" action=""> {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-lg btn-success">Create</button>
+  </form> {% endcomment %}
+</div>
+{% endblock %}

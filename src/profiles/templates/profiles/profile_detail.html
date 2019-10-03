@@ -5,7 +5,7 @@
   <h3 style="font-weight: bold">Profile</h3>
   {% if request.user.is_authenticated and profile.user == request.user %}
     <div class='btn-group'>
-      <a href="#" class="btn btn-info">Edit Profile</a>
+      <a href="{{profile.get_update_url}}" class="btn btn-info">Edit Profile</a>
     </div>
   {% endif %}
 </header>
@@ -14,15 +14,15 @@
   {% if profile %}
   <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1rem; ">
     <div class="profile-left">
-      <img style="height: 450px; border-radius: 15rem" src="{{profile.image.url}}" alt="">
+      <img style="height: 450px" src="{{profile.image.url}}" alt="">
       <br>
       <br>
       <h4>{{profile.name}}</h4>
       <p class="lead">{{profile.location}}</p>
       {% if request.user.is_authenticated and profile.user == request.user %}
       <div class='btn-group'>
-        <a href="#" class="btn btn-info">Experiences</a>
-        <a href="#" class="btn btn-dark">Educations</a>
+        <a href="{{profile.get_experience_url}}" class="btn btn-info">Experiences</a>
+        <a href="{{profile.get_education_url}}" class="btn btn-dark">Educations</a>
       </div>
       {% endif %}
     </div>

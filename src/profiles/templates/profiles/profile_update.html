@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+  <h3 style="font-weight: bold">Update Profile</h3>
+</header>
+<br>
+<div class='profile'>
+  <form method="POST" action=""> {% csrf_token %}
+    {{ form|crispy }}
+    <div class="btn-group">
+      <button type="submit" class="btn btn-lg btn-success">Update</button>
+      <a href="{{profile.get_absolute_url }}" class="btn btn-lg btn-dark">Back</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

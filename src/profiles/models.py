@@ -90,7 +90,27 @@ class Profile(models.Model):
         return self.name
 
     def get_absolute_url(self, *args, **kwargs):
-        return reverse("profiles:profile_detail", kwargs={"pk": self.pk})
+        return reverse(
+          "profiles:profile_detail",
+          kwargs={"pk": self.pk}
+        )
+
+    def get_update_url(self, *args, **kwargs):
+        return reverse(
+          "profiles:profile_update",
+          kwargs={"pk": self.pk}
+        )
+
+    def get_experience_url(self, *args, **kwargs):
+        return reverse(
+          "profiles:profile_create_experience",
+          kwargs={"pk": self.pk})
+
+    def get_education_url(self, *args, **kwargs):
+        return reverse(
+          "profiles:profile_create_education",
+          kwargs={"pk": self.pk}
+        )
 
 
 class Experience(models.Model):

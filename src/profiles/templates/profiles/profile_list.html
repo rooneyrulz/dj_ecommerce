@@ -4,7 +4,7 @@
 <header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
   <h3 style="font-weight: bold">Profiles</h3>
   {% if request.user.is_authenticated and not request.user.profile %}
-  <a href="" class="btn btn-success">Create Profile</a>
+  <a href="/profiles/create" class="btn btn-success">Create Profile</a>
   {% endif %}
 </header>
 <br>
@@ -14,7 +14,7 @@
   <div
     style="display: grid; grid-template-columns: 1fr 2fr 1fr; grid-gap: 1rem; align-items: center; margin-bottom: 1em"
     class="card text-left">
-    <img style="width: 135px" class="card-img-top" src="{{profile.image.url}}" alt="">
+    <img style="width: 135px; height: 135px" class="card-img-top" src="{{profile.image.url}}" alt="">
     <div class="card-body">
       <h4 class="card-title">{{ profile.name }}</h4>
       <p class="card-text">{{ profile.location }}</p>
