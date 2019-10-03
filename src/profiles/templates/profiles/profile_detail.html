@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
   <h3 style="font-weight: bold">Profile</h3>
   {% if request.user.is_authenticated and profile.user == request.user %}
-    <div class='btn-group'>
-      <a href="{{profile.get_update_url}}" class="btn btn-info">Edit Profile</a>
-    </div>
+  <div class='btn-group'>
+    <a href="{{profile.get_update_url}}" class="btn btn-info">Edit Profile</a>
+  </div>
   {% endif %}
 </header>
 <br>
@@ -75,8 +76,27 @@
   <hr>
   <br>
   <div class="profile-social">
-    <div class="text-center">
-      <h4>Follow Me</h4>
+    <div>
+      <header class="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+        <h4>Follow Me</h4>
+        {% if not profile.social %}
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#contentId"
+          aria-expanded="false" aria-controls="contentId">
+          Social Links
+        </button>
+        {% else %}
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#contentId"
+          aria-expanded="false" aria-controls="contentId">
+          Edit
+        </button>
+        {% endif %}
+      </header>
+      <div class="collapse" id="contentId">
+        <form method="POST" action="">
+          {{ form|crispy }}
+          <button class="btn btn-outline-info">Add</button>
+        </form>
+      </div>
     </div>
   </div>
   {% else %}

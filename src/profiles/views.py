@@ -3,7 +3,12 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Profile
-from .forms import ProfileForm
+from .forms import (
+  ProfileForm,
+  ExperienceForm,
+  EducationForm,
+  SocialForm
+)
 
 
 # Profiles List View
@@ -18,8 +23,10 @@ def profile_list_view(request):
 # Profile Detail View
 def profile_detail_view(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
+    form = SocialForm(request.POST or None)
     context = {
-      'profile': profile
+      'profile': profile,
+      'form': form
     }
     return render(request, 'profiles/profile_detail.html', context)
 
@@ -67,11 +74,19 @@ def profile_update_view(request, pk):
 
 # Profile Create Experience View
 def profile_create_experience_view(request, pk):
-    context = {}
+    form = ExperienceForm(request.POST or None)
+    context = {
+      'title': 'Experiences',
+      'form': form
+    }
     return render(request, 'profiles/profile_create_experience.html', context)
 
 
 # Profile Create Education View
 def profile_create_education_view(request, pk):
-    context = {}
+    form = EducationForm(request.POST or None)
+    context = {
+      'title': 'Educations',
+      'form': form
+    }
     return render(request, 'profiles/profile_create_education.html', context)

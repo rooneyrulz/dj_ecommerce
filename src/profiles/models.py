@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
+from datetime import datetime
 
 
 GENDER_CHOICES = [
@@ -114,19 +115,91 @@ class Profile(models.Model):
 
 
 class Experience(models.Model):
-    profile = models.OneToOneField(
+    profile = models.ForeignKey(
       Profile,
       default=1,
       on_delete=models.CASCADE
     )
+    title = models.CharField(
+      max_length=150,
+      choices=PROFESSION_CHOICES,
+      default=1
+    )
+    company = models.CharField(
+      max_length=120,
+      blank=True,
+      null=True
+    )
+    location = models.CharField(
+      max_length=100,
+      blank=True,
+      null=True
+    )
+    worked_from = models.DateField(
+      blank=True,
+      null=True
+    )
+    worked_until = models.DateField(
+      blank=True,
+      null=True
+    )
+    currently_work_here = models.BooleanField(
+      default=False
+    )
+    description = models.TextField(
+      blank=True,
+      null=True
+    )
+    created_at = models.DateTimeField(
+      auto_now_add=True
+    )
+
+    def __str__(self):
+        return self.title
 
 
 class Education(models.Model):
-    profile = models.OneToOneField(
+    profile = models.ForeignKey(
       Profile,
       default=1,
       on_delete=models.CASCADE
     )
+    school = models.CharField(
+      max_length=120,
+      blank=True,
+      null=True
+    )
+    degree = models.CharField(
+      max_length=100,
+      blank=True,
+      null=True
+    )
+    field_of_study = models.CharField(
+      max_length=150,
+      blank=True,
+      null=True
+    )
+    studied_from = models.DateField(
+      blank=True,
+      null=True
+    )
+    studied_until = models.DateField(
+      blank=True,
+      null=True
+    )
+    currently_studying = models.BooleanField(
+      default=False
+    )
+    description = models.TextField(
+      blank=True,
+      null=True
+    )
+    created_at = models.DateTimeField(
+      auto_now_add=True
+    )
+
+    def __str__(self):
+        return self.school
 
 
 class Social(models.Model):

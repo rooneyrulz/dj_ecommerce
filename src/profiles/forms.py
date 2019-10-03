@@ -19,3 +19,28 @@ class ProfileForm(forms.ModelForm):
           'bio',
           'image'
         ]
+
+
+class ExperienceForm(forms.ModelForm):
+    class Meta:
+        model = Experience
+        fields = '__all__'
+
+
+class EducationForm(forms.ModelForm):
+    class Meta:
+        model = Education
+        fields = '__all__'
+
+
+class SocialForm(forms.ModelForm):
+    class Meta:
+        model = Social
+        fields = [
+          'youtube',
+          'twitter',
+          'facebook',
+          'linkedin',
+          'instagram',
+          'github'
+        ]
