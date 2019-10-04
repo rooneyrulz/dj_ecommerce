@@ -77,25 +77,45 @@
   <br>
   <div class="profile-social">
     <div>
-      <header class="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+      <header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center" class="">
         <h4>Follow Me</h4>
-        {% if not profile.social %}
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#contentId"
-          aria-expanded="false" aria-controls="contentId">
+        <!-- Button trigger modal -->
+        {% if request.user.is_authenticated and profile.user == request.user %}
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modelId">
           Social Links
-        </button>
-        {% else %}
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#contentId"
-          aria-expanded="false" aria-controls="contentId">
-          Edit
         </button>
         {% endif %}
       </header>
-      <div class="collapse" id="contentId">
-        <form method="POST" action="">
-          {{ form|crispy }}
-          <button class="btn btn-outline-info">Add</button>
-        </form>
+      <br />
+      <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form method="POST" action=""> {% csrf_token %}
+              <div class="modal-header">
+                <h5 class="modal-title">Social Page</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  {{form|crispy}}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  {% if profile.social %}
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  {% else %}
+                  <button type="submit" class="btn btn-success">Add</button>
+                  {% endif %}
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -103,4 +123,13 @@
   <p class='lead text-muted'>No profiles found..</p>
   {% endif %}
 </div>
+
+<script>
+  $('#exampleModal').on('show.bs.modal', event => {
+    var button = $(event.relatedTarget);
+    var modal = $(this);
+    // Use above variables to manipulate the DOM
+
+  });
+</script>
 {% endblock %}

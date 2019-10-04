@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import Profile
+from .models import Profile, Experience, Education, Social
 from .forms import (
   ProfileForm,
   ExperienceForm,
@@ -23,11 +23,27 @@ def profile_list_view(request):
 # Profile Detail View
 def profile_detail_view(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
-    form = SocialForm(request.POST or None)
-    context = {
-      'profile': profile,
-      'form': form
-    }
+    try:
+        social = Social.objects.get(profile=profile)
+        form = SocialForm(request.POST or None, instance=social)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Social links updated successfully')
+        context = {
+          'profile': profile,
+          'form': form
+        }
+    except Social.DoesNotExist:
+        form = SocialForm(request.POST or None)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.profile = profile
+            form.save()
+            messages.success(request, 'Social links added successfully')
+        context = {
+          'profile': profile,
+          'form': form
+        }
     return render(request, 'profiles/profile_detail.html', context)
 
 
