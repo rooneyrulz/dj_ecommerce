@@ -46,8 +46,7 @@ class Profile(models.Model):
     )
     company = models.CharField(
       max_length=150,
-      blank=True,
-      null=True
+      default='Some Company Pvt Ltd'
     )
     website = models.URLField(
       unique=True,
@@ -63,10 +62,7 @@ class Profile(models.Model):
       choices=GENDER_CHOICES,
       default=1
     )
-    age = models.IntegerField(
-      blank=True,
-      null=True
-    )
+    age = models.IntegerField()
     status = models.CharField(
       max_length=50,
       choices=STATUS_CHOICES,
@@ -102,14 +98,20 @@ class Profile(models.Model):
           kwargs={"pk": self.pk}
         )
 
+    def get_delete_url(self, *args, **kwargs):
+        return reverse(
+          "profiles:profile_delete",
+          kwargs={"pk": self.pk}
+        )
+
     def get_experience_url(self, *args, **kwargs):
         return reverse(
-          "profiles:profile_create_experience",
+          "profiles:profile_experience_list",
           kwargs={"pk": self.pk})
 
     def get_education_url(self, *args, **kwargs):
         return reverse(
-          "profiles:profile_create_education",
+          "profiles:profile_education_list",
           kwargs={"pk": self.pk}
         )
 
@@ -127,25 +129,15 @@ class Experience(models.Model):
     )
     company = models.CharField(
       max_length=120,
-      blank=True,
-      null=True
+      default='New Company Pvt Ltd'
     )
     location = models.CharField(
       max_length=100,
-      blank=True,
-      null=True
+      default='Sri Lanka'
     )
-    worked_from = models.DateField(
-      blank=True,
-      null=True
-    )
-    worked_until = models.DateField(
-      blank=True,
-      null=True
-    )
-    currently_work_here = models.BooleanField(
-      default=False
-    )
+    worked_from = models.DateField()
+    worked_until = models.DateField()
+    currently_work_here = models.BooleanField()
     description = models.TextField(
       blank=True,
       null=True
@@ -157,6 +149,17 @@ class Experience(models.Model):
     def __str__(self):
         return self.title
 
+    def get_update_url(self, *args, **kwargs):
+        return reverse(
+          'profiles:profile_experience_update',
+          kwargs={'pk': self.pk}
+        )
+
+    def get_delete_url(self, *args, **kwargs):
+        return reverse(
+          'profiles:profile_experience_delete',
+          kwargs={'pk': self.pk})
+
 
 class Education(models.Model):
     profile = models.ForeignKey(
@@ -166,30 +169,19 @@ class Education(models.Model):
     )
     school = models.CharField(
       max_length=120,
-      blank=True,
-      null=True
+      default='New Collage'
     )
     degree = models.CharField(
       max_length=100,
-      blank=True,
-      null=True
-    )
+      default='BSC'
+      )
     field_of_study = models.CharField(
       max_length=150,
-      blank=True,
-      null=True
-    )
-    studied_from = models.DateField(
-      blank=True,
-      null=True
-    )
-    studied_until = models.DateField(
-      blank=True,
-      null=True
-    )
-    currently_studying = models.BooleanField(
-      default=False
-    )
+      default='Computer Science'
+      )
+    studied_from = models.DateField()
+    studied_until = models.DateField()
+    currently_studying = models.BooleanField()
     description = models.TextField(
       blank=True,
       null=True
@@ -200,6 +192,17 @@ class Education(models.Model):
 
     def __str__(self):
         return self.school
+
+    def get_update_url(self, *args, **kwargs):
+        return reverse(
+          'profiles:profile_education_update',
+          kwargs={'pk': self.pk}
+        )
+
+    def get_delete_url(self, *args, **kwargs):
+        return reverse(
+          'profiles:profile_education_delete',
+          kwargs={'pk': self.pk})
 
 
 class Social(models.Model):

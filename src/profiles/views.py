@@ -89,8 +89,16 @@ def profile_update_view(request, pk):
 
 
 # Profile Create Experience View
+@login_required()
 def profile_create_experience_view(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
     form = ExperienceForm(request.POST or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.profile = profile
+        form.save()
+        messages.success(request, f'An experience cretated for {request.user}')
+        return redirect(profile.get_experience_url())
     context = {
       'title': 'Experiences',
       'form': form
@@ -98,11 +106,100 @@ def profile_create_experience_view(request, pk):
     return render(request, 'profiles/profile_create_experience.html', context)
 
 
+# Profile Experiences List View
+@login_required()
+def profile_experience_list_view(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    experiences = profile.experience_set.all()
+    context = {
+      'title': 'Experiences',
+      'experiences': experiences
+    }
+    return render(request, 'profiles/profile_experience_list.html', context)
+
+
+# Profile Experience Update View
+@login_required()
+def profile_experience_update_view(request, pk):
+    profile = get_object_or_404(Profile, user=request.user)
+    experience = get_object_or_404(
+      Experience,
+      pk=pk,
+      profile=request.user.profile
+    )
+    form = ExperienceForm(
+      request.POST or None,
+      instance=experience
+    )
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'An experience updated!')
+        return redirect(profile.get_experience_url())
+    context = {
+      'title': 'Update Experience',
+      'form': form
+    }
+    return render(request, 'profiles/profile_experience_update.html', context)
+
+
+# Profile Experience Delete View
+@login_required()
+def profile_experience_delete_view(request, pk):
+    profile = get_object_or_404(Profile, user=request.user)
+    experience = get_object_or_404(Experience, pk=pk)
+    if request.method == 'POST':
+        experience.delete()
+        messages.success(request, 'An experience deleted!')
+        return redirect(profile.get_experience_url())
+    context = {
+      'title': 'Experience Delete',
+      'profile': profile,
+      'exp': experience
+    }
+    return render(request, 'profiles/profile_experience_delete.html', context)
+
+
+# Profile Education List View
+@login_required()
+def profile_education_list_view(request, pk):
+    profile = get_object_or_404(Profile, pk=pk, user=request.user)
+    educations = profile.education_set.all()
+    context = {
+      'title': 'Educations',
+      'educations': educations
+    }
+    return render(request, 'profiles/profile_education_list.html', context)
+
+
 # Profile Create Education View
+@login_required()
 def profile_create_education_view(request, pk):
+    profile = get_object_or_404(
+      Profile,
+      pk=pk,
+      user=request.user
+    )
     form = EducationForm(request.POST or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.profile = profile
+        form.save()
+        messages.success(request, f'An education created for {request.user}')
+        return redirect(profile.get_education_url())
     context = {
       'title': 'Educations',
       'form': form
     }
     return render(request, 'profiles/profile_create_education.html', context)
+
+
+# Profile Education Update View
+def profile_education_update_view(request, pk):
+    context = {}
+    return render(request, 'profiles/profile_education_update.html', context)
+
+
+# Profile Education Delete View
+def profile_education_delete_view(request, pk):
+    context = {}
+    return render(request, 'profiles/profile_education_delete.html', context)

@@ -3,13 +3,13 @@
 
 {% block content %}
 <header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
-  <h3 style="font-weight: bold">Experiences</h3>
+  <h3 style="font-weight: bold">Update Educations</h3>
 </header>
 <br>
 <div class='profile'>
   <form method="POST" action=""> {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit" class="btn btn-lg btn-success">Create Experience</button>
+    <button type="submit" class="btn btn-lg btn-success">Update Education</button>
   </form>
 </div>
 {% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+  <h3 style="font-weight: bold">Educations</h3>
+</header>
+<br>
+<div class='profile'>
+  {% if not educations %}
+  <p class='lead text-muted'>Profile has no educations yet..</p>
+  {% else %}
+  <div class='profile-list'>
+    {% for edu in educations %}
+    <div class="mb-3" id="accordianId" role="tablist" aria-multiselectable="true">
+      <div class="card">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center"
+          class="card-header" role="tab" id="section1HeaderId">
+          <h5>Educations {{forloop.counter}}</h5>
+          <a class="btn btn-sm btn-primary" data-toggle="collapse" data-parent="#accordianId" href="#section1ContentId"
+            aria-expanded="true" aria-controls="section1ContentId">
+            View
+          </a>
+        </div>
+        <div id="section1ContentId" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
+          <div class="card-body">
+            <ul class="list-group">
+              {% if edu.school %}
+              <li class="list-group-item">
+                <strong>School</strong>
+                <span class="float-right">{{edu.school}}</span>
+              </li>
+              {% endif %}
+              {% if edu.degree %}
+              <li class="list-group-item">
+                <strong>Degree</strong>
+                <span class="float-right">{{edu.degree}}</span>
+              </li>
+              {% endif %}
+              {% if edu.field_of_study %}
+              <li class="list-group-item">
+                <strong>Field</strong>
+                <span class="float-right">{{edu.field_of_study}}</span>
+              </li>
+              {% endif %}
+              {% if edu.studied_from %}
+              <li class="list-group-item">
+                <strong>Date (started)</strong>
+                <span class="float-right">{{edu.studied_from}}</span>
+              </li>
+              {% endif %}
+              {% if edu.studied_until %}
+              <li class="list-group-item">
+                <strong>Date (end)</strong>
+                <span class="float-right">{{edu.studied_until}}</span>
+              </li>
+              {% endif %}
+              {% if edu.description %}
+              <li class="list-group-item">
+                <strong>Description</strong><br>
+                <span class="">{{edu.description}}</span>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+          <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center"
+            class="card-footer text-center">
+            <span>Education created {{exp.created_at}}</span>
+            <div class="btn-group">
+              <a class="btn btn-primary" href="{{edu.get_update_url}}">Edit</a>
+              <a class="btn btn-danger" href="{{edu.get_delete_url}}">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

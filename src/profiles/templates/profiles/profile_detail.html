@@ -6,7 +6,7 @@
   <h3 style="font-weight: bold">Profile</h3>
   {% if request.user.is_authenticated and profile.user == request.user %}
   <div class='btn-group'>
-    <a href="{{profile.get_update_url}}" class="btn btn-info">Edit Profile</a>
+    <a href="{{profile.get_update_url}}" class="btn btn-outline-primary">Edit Profile</a>
   </div>
   {% endif %}
 </header>
@@ -22,8 +22,8 @@
       <p class="lead">{{profile.location}}</p>
       {% if request.user.is_authenticated and profile.user == request.user %}
       <div class='btn-group'>
-        <a href="{{profile.get_experience_url}}" class="btn btn-info">Experiences</a>
-        <a href="{{profile.get_education_url}}" class="btn btn-dark">Educations</a>
+        <a href="{{profile.get_experience_url}}create" class="btn btn-primary">Experiences</a>
+        <a href="{{profile.get_education_url}}create" class="btn btn-secondary">Educations</a>
       </div>
       {% endif %}
     </div>
