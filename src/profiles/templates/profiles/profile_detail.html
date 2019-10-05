@@ -20,11 +20,9 @@
       <br>
       <h4>{{profile.name}}</h4>
       <p class="lead">{{profile.location}}</p>
-      {% if request.user.is_authenticated and profile.user == request.user %}
-      <div class='btn-group'>
-        <a href="{{profile.get_experience_url}}create" class="btn btn-primary">Experiences</a>
-        <a href="{{profile.get_education_url}}create" class="btn btn-secondary">Educations</a>
-      </div>
+      {% if request.user.is_authenticated %}
+      <a href="{{profile.get_experience_url}}" class="btn btn-primary">Experiences</a>
+      <a href="{{profile.get_education_url}}" class="btn btn-secondary">Educations</a>
       {% endif %}
     </div>
     <div class="profile-right">
@@ -117,6 +115,28 @@
           </div>
         </div>
       </div>
+    </div>
+    <div
+      style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 1rem; justify-content: center; align-items: center"
+      class="profile-social-links">
+      {% if profile.social.youtube %}
+      <a href="{{profile.social.youtube}}" class="btn btn-outline-primary">Youtube</a>
+      {% endif %}
+      {% if profile.social.twitter %}
+      <a href="{{profile.social.twitter}}" class="btn btn-outline-primary">Twitter</a>
+      {% endif %}
+      {% if profile.social.facebook %}
+      <a href="{{profile.social.facebook}}" class="btn btn-outline-primary">Facebook</a>
+      {% endif %}
+      {% if profile.social.linkedin %}
+      <a href="{{profile.social.linkedin}}" class="btn btn-outline-primary">Linked In</a>
+      {% endif %}
+      {% if profile.social.instagram %}
+      <a href="{{profile.social.instagram}}" class="btn btn-outline-primary">Instagram</a>
+      {% endif %}
+      {% if profile.social.github %}
+      <a href="{{profile.social.github}}" class="btn btn-outline-primary">Github</a>
+      {% endif %}
     </div>
   </div>
   {% else %}

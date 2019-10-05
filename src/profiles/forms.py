@@ -197,6 +197,55 @@ class EducationForm(forms.ModelForm):
 
 
 class SocialForm(forms.ModelForm):
+    youtube = forms.URLField(
+      required=False,
+      widget=forms.URLInput(
+        attrs={
+          'placeholder': 'Youtube link'
+        }
+      )
+    )
+    twitter = forms.URLField(
+      required=False,
+      widget=forms.URLInput(
+        attrs={
+          'placeholder': 'Twitter link'
+        }
+      )
+    )
+    facebook = forms.URLField(
+      required=False,
+      widget=forms.URLInput(
+        attrs={
+          'placeholder': 'Facebook link'
+        }
+      )
+    )
+    linkedin = forms.URLField(
+      required=False,
+      widget=forms.URLInput(
+        attrs={
+          'placeholder': 'Linkedin link'
+        }
+      )
+    )
+    instagram = forms.URLField(
+      required=False,
+      widget=forms.URLInput(
+        attrs={
+          'placeholder': 'Instagram link'
+        }
+      )
+    )
+    github = forms.URLField(
+      required=False,
+      widget=forms.URLInput(
+        attrs={
+          'placeholder': 'Github link'
+        }
+      )
+    )
+
     class Meta:
         model = Social
         fields = [

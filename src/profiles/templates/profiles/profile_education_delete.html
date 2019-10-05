@@ -23,38 +23,38 @@
             <ul class="list-group">
               {% if edu.school %}
               <li class="list-group-item">
-                <strong>Title</strong>
-                <span class="float-right">{{exp.title}}</span>
+                <strong>School</strong>
+                <span class="float-right">{{edu.school}}</span>
               </li>
               {% endif %}
-              {% if exp.company %}
+              {% if edu.degree %}
               <li class="list-group-item">
-                <strong>Company</strong>
-                <span class="float-right">{{exp.company}}</span>
+                <strong>Degree</strong>
+                <span class="float-right">{{edu.degree}}</span>
               </li>
               {% endif %}
-              {% if exp.location %}
+              {% if edu.field_of_study %}
               <li class="list-group-item">
-                <strong>Location</strong>
-                <span class="float-right">{{exp.location}}</span>
+                <strong>Field</strong>
+                <span class="float-right">{{edu.field_of_study}}</span>
               </li>
               {% endif %}
-              {% if exp.worked_from %}
+              {% if edu.studied_from %}
               <li class="list-group-item">
                 <strong>Date (started)</strong>
-                <span class="float-right">{{exp.worked_from}}</span>
+                <span class="float-right">{{edu.studied_from}}</span>
               </li>
               {% endif %}
-              {% if exp.worked_until %}
+              {% if edu.studied_until %}
               <li class="list-group-item">
                 <strong>Date (end)</strong>
-                <span class="float-right">{{exp.worked_until}}</span>
+                <span class="float-right">{{edu.studied_until}}</span>
               </li>
               {% endif %}
-              {% if exp.description %}
+              {% if edu.description %}
               <li class="list-group-item">
                 <strong>Description</strong><br>
-                <span class="">{{exp.description}}</span>
+                <span class="">{{edu.description}}</span>
               </li>
               {% endif %}
             </ul>
@@ -64,7 +64,7 @@
     </div>
     <div class="btn-group">
       <button type="submit" class="btn btn-danger">Yes</button>
-      <a href="{{profile.get_experience_url}}" class="btn btn-secondary">No</a>
+      <a href="{{profile.get_education_url}}" class="btn btn-secondary">No</a>
     </div>
   </form>
 </div>

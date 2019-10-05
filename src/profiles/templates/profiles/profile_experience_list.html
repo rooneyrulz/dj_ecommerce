@@ -4,6 +4,9 @@
 {% block content %}
 <header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
   <h3 style="font-weight: bold">Experiences</h3>
+  {% if request.user.is_authenticated and profile.user == request.user %}
+  <a class="btn btn-outline-primary" href="{{profile.get_experience_url}}create">Create Experiences</a>
+  {% endif %}
 </header>
 <br>
 <div class='profile'>
@@ -66,10 +69,14 @@
           <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center"
             class="card-footer text-center">
             <span>Experience created {{exp.created_at}}</span>
+            {% if profile.user == request.user and exp.profile == request.user.profile %}
             <div class="btn-group">
               <a class="btn btn-primary" href="{{exp.get_update_url}}">Edit</a>
               <a class="btn btn-danger" href="{{exp.get_delete_url}}">Delete</a>
             </div>
+            {% else %}
+              <a class="btn btn-dark" href="{{profile.get_absolute_url}}">Back</a>
+            {% endif %}
           </div>
         </div>
       </div>
