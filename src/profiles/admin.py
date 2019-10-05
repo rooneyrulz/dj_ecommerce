@@ -14,7 +14,19 @@ class ProfileAdmin(admin.ModelAdmin):
     ]
 
 
+class SocialAdmin(admin.ModelAdmin):
+    list_display = [
+        'profile',
+        'youtube',
+        'twitter',
+        'facebook',
+        'linkedin',
+        'instagram',
+        'github'
+    ]
+
+
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Experience)
 admin.site.register(Education)
-admin.site.register(Social)
+admin.site.register(Social, SocialAdmin)

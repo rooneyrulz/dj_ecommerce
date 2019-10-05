@@ -50,6 +50,8 @@ def profile_detail_view(request, pk):
 # Profile Create View
 @login_required()
 def profile_create_view(request):
+    # if request.user.profile:
+    #     return redirect(request.user.profile.get_absolute_url())
     form = ProfileForm(
       request.POST or None,
       request.FILES or None
@@ -58,6 +60,8 @@ def profile_create_view(request):
         profile = form.save(commit=False)
         profile.user = request.user
         form.save()
+        messages.success(request, 'Profile created successfully!')
+        return redirect(request.user.profile.get_absolute_url())
     context = {
       'title': 'Create Profile',
       'form': form
@@ -68,15 +72,14 @@ def profile_create_view(request):
 # Profile Create View
 @login_required()
 def profile_update_view(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
+    profile = get_object_or_404(Profile, pk=pk, user=request.user)
     form = ProfileForm(
       request.POST or None,
       request.FILES or None,
-      instance=profile
+      instance=request.user.profile
     )
     if form.is_valid():
         profile = form.save(commit=False)
-        profile.user = request.user
         form.save()
         messages.success(request, 'Profile updated successfully!')
         return redirect(profile.get_absolute_url())
@@ -178,7 +181,6 @@ def profile_education_list_view(request, pk):
 
 
 # Profile Create Education View
-@login_required()
 @login_required()
 def profile_create_education_view(request, pk):
     profile = get_object_or_404(

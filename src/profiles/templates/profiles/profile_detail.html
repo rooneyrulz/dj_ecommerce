@@ -139,6 +139,23 @@
       {% endif %}
     </div>
   </div>
+  <br>
+  {% if request.user.is_authenticated and profile.user == request.user %}
+  <br>
+  <hr>
+  <br>
+  <div class="profile-bottom">
+    <p>
+      <div class="card border-danger text-center p-4">
+        <div class="card-body">
+          <p class="lead">Privacy Zone</p>
+          <p class="lead">You can not go back once the action done!</p>
+          <a href="" class="btn btn-danger btn-lg">Delete Account</a>
+        </div>
+      </div>
+    </p>
+  </div>
+  {% endif %}
   {% else %}
   <p class='lead text-muted'>No profiles found..</p>
   {% endif %}

@@ -35,7 +35,7 @@ class ProfileForm(forms.ModelForm):
       )
     )
     gender = forms.Select()
-    age = forms.CharField(
+    age = forms.IntegerField(
       widget=forms.NumberInput(
         attrs={
           'placeholder': 'Enter your age'

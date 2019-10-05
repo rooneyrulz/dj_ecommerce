@@ -12,9 +12,9 @@
   {% if profiles %}
   {% for profile in profiles %}
   <div
-    style="display: grid; grid-template-columns: 1fr 2fr 1fr; grid-gap: 1rem; align-items: center; margin-bottom: 1em"
-    class="card text-left">
-    <img style="width: 135px; height: 135px" class="card-img-top" src="{{profile.image.url}}" alt="">
+    style="display: grid; grid-template-columns: 1fr 2fr 1fr; grid-gap: 1rem; align-items: center; margin-bottom: 1em; backgroud: transparent"
+    class="card">
+    <img style="width: 135px; height: 135px;" class="card-img-top" src="{{profile.image.url}}" alt="">
     <div class="card-body">
       <h4 class="card-title">{{ profile.name }}</h4>
       <p class="card-text">{{ profile.location }}</p>
