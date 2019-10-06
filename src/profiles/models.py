@@ -107,7 +107,8 @@ class Profile(models.Model):
     def get_experience_url(self, *args, **kwargs):
         return reverse(
           "profiles:profile_experience_list",
-          kwargs={"pk": self.pk})
+          kwargs={"pk": self.pk}
+        )
 
     def get_education_url(self, *args, **kwargs):
         return reverse(
@@ -158,7 +159,8 @@ class Experience(models.Model):
     def get_delete_url(self, *args, **kwargs):
         return reverse(
           'profiles:profile_experience_delete',
-          kwargs={'pk': self.pk})
+          kwargs={'pk': self.pk}
+        )
 
 
 class Education(models.Model):

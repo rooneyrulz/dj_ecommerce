@@ -15,6 +15,7 @@ from .forms import (
 def profile_list_view(request):
     profiles = Profile.objects.all()
     context = {
+      'title': 'Profiles',
       'profiles': profiles
     }
     return render(request, 'profiles/profile_list.html', context)
@@ -30,6 +31,7 @@ def profile_detail_view(request, pk):
             form.save()
             messages.success(request, 'Social links updated successfully')
         context = {
+          'title': 'Profile Detail',
           'profile': profile,
           'form': form
         }
@@ -41,6 +43,7 @@ def profile_detail_view(request, pk):
             form.save()
             messages.success(request, 'Social links added successfully')
         context = {
+          'title': 'Profile Detail',
           'profile': profile,
           'form': form
         }

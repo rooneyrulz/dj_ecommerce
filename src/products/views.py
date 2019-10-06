@@ -3,7 +3,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
-from .models import Product
+from .models import Product, Like
 from cart.models import Cart
 
 from .forms import ProductForm, CartForm
@@ -77,3 +77,31 @@ def product_add_to_cart_view(request, pk):
 # Product delete view
 def product_delete_view(request, pk):
 	return render(request, 'products/product_delete.html', {})
+
+
+# Product Like View
+@login_required()
+def product_like_view(request, pk):
+	product = get_object_or_404(Product, pk=pk)
+	is_liked = Like.objects.filter(user=request.user, product=product)
+	if is_liked:
+		messages.error(request, 'Product has already been liked!')
+		return redirect('/products')
+	like = Like.objects.create(user=request.user, product=product)
+	like.save()
+	messages.success(request, 'Product has been liked!')
+	return redirect('/products')
+
+
+# Product Like View
+@login_required()
+def product_unlike_view(request, pk):
+	product = get_object_or_404(Product, pk=pk)
+	is_liked = Like.objects.filter(user=request.user, product=product)
+	if is_liked:
+		is_liked.delete()
+		messages.success(request, 'Product has been unliked!')
+		return redirect('/products')
+	messages.error(request, 'Product has not been liked!')
+	return redirect('/products')
+	

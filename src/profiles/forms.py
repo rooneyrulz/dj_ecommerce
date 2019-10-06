@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import Profile, Education, Experience, Social
 
 
@@ -84,7 +83,7 @@ class ProfileForm(forms.ModelForm):
     def clean_age(self, *args, **kwargs):
         age = self.cleaned_data.get('age')
         if not (age > 17 and age < 50):
-            raise forms.ValidationError('Age must be between 17 - 50')
+            raise forms.ValidationError('Age must be between 17-50')
         else:
             return age
 
@@ -196,6 +195,7 @@ class EducationForm(forms.ModelForm):
         ]
 
 
+# Model Form - Social
 class SocialForm(forms.ModelForm):
     youtube = forms.URLField(
       required=False,

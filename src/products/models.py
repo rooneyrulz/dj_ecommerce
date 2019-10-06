@@ -42,6 +42,18 @@ class Product(models.Model):
           kwargs={'pk': self.id}
         )
 
+    def get_like_url(self, *args, **kwargs):
+        return reverse(
+          'products:product_like_view',
+          kwargs={'pk': self.id}
+        )
+
+    def get_unlike_url(self, *args, **kwargs):
+        return reverse(
+          'products:product_unlike_view',
+          kwargs={'pk': self.id}
+        )
+
     def get_add_to_cart_url(self, *args, **kwargs):
         return reverse(
           'products:product_add_to_cart_view',

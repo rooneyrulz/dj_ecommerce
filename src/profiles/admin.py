@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from .models import Profile, Experience, Education, Social
 
 
@@ -9,7 +8,6 @@ class ProfileAdmin(admin.ModelAdmin):
         'profession',
         'company',
         'location',
-        'status',
         'created_at'
     ]
 
@@ -19,10 +17,7 @@ class SocialAdmin(admin.ModelAdmin):
         'profile',
         'youtube',
         'twitter',
-        'facebook',
-        'linkedin',
-        'instagram',
-        'github'
+        'facebook'
     ]
 
 
