@@ -25,7 +25,7 @@ def users_account_delete_view(request):
     user = get_object_or_404(User, pk=request.user.pk)
     if user:
         user.delete()
-    messages.success(request, 'Your account destroyed!')
-    return redirect('/')
+        messages.success(request, 'Your account destroyed!')
+        return redirect('/')
     messages.error(request, 'Oops! Something went wrong!')
     return redirect('/dashboard')
