@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import users_signup_view
+from .views import users_signup_view, users_account_delete_view
 
 urlpatterns = [
     path(
@@ -18,5 +18,10 @@ urlpatterns = [
         'sign-out/',
         LogoutView.as_view(template_name='users/users_logout.html'),
         name='users_logout_view'
+    ),
+    path(
+        'destroy/',
+        users_account_delete_view,
+        name='users_account_delete_view'
     )
 ]
