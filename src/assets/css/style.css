@@ -23,3 +23,9 @@ body {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
 }
+
+@media Screen and (max-width: 1000px) {
+  .p-display-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}

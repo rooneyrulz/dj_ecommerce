@@ -4,18 +4,16 @@
 {% block content %}
 
 <div style='width: 60%; margin: auto'>
-    <header class="mb-5">
-    <h3 style="font-weight: bold" class="page-heading">Sign In</h3>
+    <header class="">
+    <h3 style="font-weight: bold" class="page-heading mb-0">Sign In</h3>
     <hr>
 </header>
-<div class="card">
-  <div class="card-body">
     <form method='POST' action='.'> {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-outline-info">Sign In</button>
+        <button type="submit" class="btn btn-primary">Sign In</button>
     </form>
-  </div>
+    <br>
+    <p class="text-center text-secondary">If you don't have an account? Let's <a href="/users/sign-up/">Sign Up</a>
+    </p>
 </div>
-</div>
-
 {% endblock %}

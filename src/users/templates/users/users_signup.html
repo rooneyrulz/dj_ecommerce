@@ -2,12 +2,17 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<header class="mb-5">
-    <h3 style="font-weight: bold" class="page-heading">Sign Up</h3>
-    <hr>
-</header>
-<form method='POST' action='.'> {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-outline-success">Sign Up</button>
-</form>
+<div style="width: 60%; margin: auto" class="users-signup">
+    <header class="text-center">
+        <h3 style="font-weight: bold" class="page-heading mb-0">Sign Up</h3>
+        <hr>
+    </header>
+    <form method='POST' action='.'> {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Sign Up</button>
+    </form>
+    <br>
+    <p class="text-center text-secondary">If you already have an account? Let's <a href="/users/sign-in/">Sign In</a>
+    </p>
+</div>
 {% endblock %}
