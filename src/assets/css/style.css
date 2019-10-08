@@ -30,6 +30,12 @@ body {
   }
 }
 
+@media Screen and (max-width: 778px) {
+  .p-display-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 nav {
   z-index: 100 !important;
 }
@@ -50,22 +56,6 @@ nav {
   justify-content: center;
   align-items: flex-end;
   z-index: -1 !important;
-}
-
-.home-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  /* background: #5475af; */
-  /* opacity: .40; */
-  z-index: 2;
-}
-
-.home h1 {
-  z-index: 3 !important;
-  opacity: 1;
 }
 
 .dashboard {

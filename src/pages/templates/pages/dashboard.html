@@ -3,10 +3,12 @@
 {% block content %}
 <div class="dashboard">
   <div class="dashboard-content">
-    <h1 class='display-4'>Dashboard</h1>
-    <p class='lead'>Welcome {{ request.user }}</p>
-    <a style="padding: 1rem 3rem" href="/products" class="btn btn-info btn-lg">Explore Products</a>
-    <a style="padding: 1rem 3rem" href="/profiles" class="btn btn-light btn-lg">Visit Profiles</a>
+    <div class="container">
+      <h1 class='display-4'>Dashboard</h1>
+      <p class='lead'>Welcome {{ request.user }}</p>
+      <a style="padding: 1rem 3rem" href="/products" class="btn btn-info btn-lg">Explore Products</a>
+      <a style="padding: 1rem 3rem" href="/profiles" class="btn btn-light btn-lg">Visit Profiles</a>
+    </div>
   </div>
   <div class="dashboard-right"></div>
 </div>

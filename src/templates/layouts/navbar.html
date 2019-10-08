@@ -26,14 +26,16 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="/cart">
+          <i class="fas fa-shopping-cart"></i>
           Cart
           {% if request.user.is_authenticated %}
-            <span style="border-radius: 2rem;" class='bg-danger py-2 px-3'>{{ request.user.cart_set.all|length }}</span>
+            <span style="border-radius: 2rem;" class='bg-info text-light py-2 px-3'>{{ request.user.cart_set.all|length }}</span>
           {% endif %}
         </a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user"></i>
           User Management
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">

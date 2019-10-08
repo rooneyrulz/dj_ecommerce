@@ -12,7 +12,8 @@ def users_signup_view(request):
     form = UserSignUpForm(request.POST or None)
     if form.is_valid():
         form.save()
-        form = UserSignUpForm()
+        messages.success(request, "You are registered! Let's login!")
+        return redirect('/users/sign-in')
     context = {
         'title': 'Sign-Up',
         'form': form

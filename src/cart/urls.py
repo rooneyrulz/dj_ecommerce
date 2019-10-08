@@ -1,5 +1,4 @@
 from django.urls import path
-
 from .views import cart_list_view, cart_item_delete_view
 
 urlpatterns = [

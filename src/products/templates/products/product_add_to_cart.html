@@ -17,7 +17,7 @@
       <p class='lead'>${{product.price}}</p>
       <form method="POST" action=""> {% csrf_token %}
         {{ form|crispy }}
-        <button type='submit' class='btn btn-outline-info'>Add to Cart</button>
+        <button type='submit' class='btn btn-outline-success'>Add to Cart</button>
       </form>
     </div>
   </div></div>

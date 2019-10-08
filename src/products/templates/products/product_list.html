@@ -16,17 +16,17 @@
           <h5 class="card-title">{{product.name}}</h5>
           <p class="card-text">${{product.price}}</p>
           <div class="text-center">
-            <a href="{{product.get_like_url}}" class="btn btn-sm btn-outline-info">
-              Like
-              <i class="far fa-thumbs-up"></i>
-              <span style="border-radius: 1rem" class="px-2 bg-danger text-light">  
+            <div class="btn-group">
+              <a class="btn text-primary" style="text-decoration: none" href="{{product.get_like_url}}">
+                <i class="fas fa-thumbs-up fa-2x mr-2"></i>
+                {% if product.like_set.all.count >= 1 %}
                 {{ product.like_set.all|length }}
-              </span>
-            </a>
-            <a href="{{product.get_unlike_url}}" class="btn btn-sm btn-outline-info">
-              Unlike
-              <i class="far fa-thumbs-down"></i>
-            </a>
+                {% endif %}
+              </a>
+              <a class="btn text-primary" href="{{product.get_unlike_url}}">
+                <i class="fas fa-thumbs-down fa-2x"></i>
+              </a>
+            </div>
             <br><br>
             <div class="btn-group">
               <a href="{{product.get_absolute_url}}" class="btn btn-outline-primary">Details</a>

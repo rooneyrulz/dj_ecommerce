@@ -1,12 +1,13 @@
-from django.contrib.auth.views import login_required
-from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.views import login_required
 from django.contrib import messages
+from django.http import Http404
 
 from .models import Product, Like
 from cart.models import Cart
 
-from .forms import ProductForm, CartForm
+from .forms import ProductForm
+from cart.forms import CartForm
 
 
 # List out all products

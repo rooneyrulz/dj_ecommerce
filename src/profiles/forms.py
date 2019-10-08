@@ -105,12 +105,6 @@ class ExperienceForm(forms.ModelForm):
         }
       )
     )
-    worked_from = forms.DateField(
-      widget=forms.SelectDateWidget()
-    )
-    worked_until = forms.DateField(
-      widget=forms.SelectDateWidget()
-    )
     currently_work_here = forms.CheckboxInput()
     description = forms.CharField(
       required=False,
@@ -164,12 +158,6 @@ class EducationForm(forms.ModelForm):
           'placeholder': 'Enter your school'
         }
       )
-    )
-    studied_from = forms.DateField(
-      widget=forms.SelectDateWidget()
-    )
-    studied_until = forms.DateField(
-      widget=forms.SelectDateWidget()
     )
     currently_studying = forms.CheckboxInput()
     description = forms.CharField(

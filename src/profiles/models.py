@@ -138,8 +138,8 @@ class Experience(models.Model):
       max_length=100,
       default='Sri Lanka'
     )
-    worked_from = models.DateField()
-    worked_until = models.DateField()
+    worked_from = models.DateField(default=datetime.now)
+    worked_until = models.DateField(default=datetime.now)
     currently_work_here = models.BooleanField()
     description = models.TextField(
       blank=True,
@@ -183,8 +183,8 @@ class Education(models.Model):
       max_length=150,
       default='Computer Science'
       )
-    studied_from = models.DateField()
-    studied_until = models.DateField()
+    studied_from = models.DateField(default=datetime.now)
+    studied_until = models.DateField(default=datetime.now)
     currently_studying = models.BooleanField()
     description = models.TextField(
       blank=True,
