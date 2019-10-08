@@ -69,7 +69,9 @@ class Profile(models.Model):
       default=1
     )
     skills = models.TextField(
-      default='Marketing, Programming'
+      default='Marketing Programming',
+      blank=True,
+      null=True
     )
     bio = models.TextField(
       blank=True,
