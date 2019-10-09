@@ -9,6 +9,8 @@ from .forms import UserSignUpForm
 
 # Users Signup View
 def users_signup_view(request):
+    if request.user.is_authenticated:
+        return redirect('/dashboard')
     form = UserSignUpForm(request.POST or None)
     if form.is_valid():
         form.save()

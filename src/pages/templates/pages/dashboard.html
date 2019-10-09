@@ -6,8 +6,15 @@
     <div class="container">
       <h1 class='display-4'>Dashboard</h1>
       <p class='lead'>Welcome {{ request.user }}</p>
+      {% if not request.user.profile %}
+        <p class='lead'>It seems you have not setup your profile yet, Let's create one!</p>
+      {% endif %}
       <a style="padding: 1rem 3rem" href="/products" class="btn btn-info btn-lg">Explore Products</a>
+      {% if request.user.profile %}
       <a style="padding: 1rem 3rem" href="/profiles" class="btn btn-light btn-lg">Visit Profiles</a>
+      {% else %}
+      <a style="padding: 1rem 3rem" href="/profiles/create" class="btn btn-light btn-lg">Create Profile</a>
+      {% endif %}
     </div>
   </div>
   <div class="dashboard-right"></div>
