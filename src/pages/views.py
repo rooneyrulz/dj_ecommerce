@@ -1,21 +1,25 @@
 from django.shortcuts import render, redirect
+from django.views.generic import View
 
 
 # Landing Page View
-def landing_page_view(request):
-    if request.user.is_authenticated:
-        return redirect('/dashboard') 
-    return render(request, 'pages/home.html', {})
+class LandingView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('/dashboard')
+        return render(request, 'pages/home.html', {})
 
 
 # About Page View
-def about_page_view(request):
-    return render(request, 'pages/about.html', {})
+class AboutView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'pages/about.html', {})
 
 
 # Dashboard Page View
-def dashboard_page_view(request):
-    if not request.user.is_authenticated:
+class DashboardView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return render(request, 'pages/dashboard.html', {})
         return redirect('/')
-    return render(request, 'pages/dashboard.html', {})
         
