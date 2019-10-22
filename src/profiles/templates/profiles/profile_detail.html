@@ -150,9 +150,11 @@
     <p>
       <div class="card border-danger text-center p-4">
         <div class="card-body">
-          <p class="lead">Privacy Zone</p>
-          <p class="lead">You can not go back once the action done!</p>
-          <a href="/users/destroy" class="btn btn-danger btn-lg">Delete Account</a>
+          <form action='/users/destroy/' method='POST'>{% csrf_token %}
+            <p class="lead">Privacy Zone</p>
+            <p class="lead">You can not go back once the action done!</p>
+            <button type='submit' class="btn btn-danger btn-lg">Delete Account</button>
+          </form>
         </div>
       </div>
     </p>

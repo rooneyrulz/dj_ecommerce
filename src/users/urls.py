@@ -1,12 +1,12 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
-from .views import users_signup_view, users_account_delete_view
+from .views import SignupView, AccountDeleteView
 
 urlpatterns = [
     path(
         'sign-up/',
-        users_signup_view,
+        SignupView.as_view(),
         name='users_sign_up_view'
     ),
     path(
@@ -21,7 +21,7 @@ urlpatterns = [
     ),
     path(
         'destroy/',
-        users_account_delete_view,
+        AccountDeleteView.as_view(),
         name='users_account_delete_view'
     )
 ]
