@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.db import models
 
@@ -7,6 +8,9 @@ from products.models import Product
 class CartManager(models.Manager):
     def get_user_item(self, request_user, *args, **kwargs):
         return self.filter(user=request_user)
+
+    def get_cart_item(self, product, user, *args, **kwargs):
+        return self.get(product=product, user=user)
 
 
 class Cart(models.Model):

@@ -1,10 +1,11 @@
 from django.urls import path
+from django.contrib.auth.decorators import login_required
 from .views import (
-    product_list_view,
-    product_details_view,
-    product_create_view,
-    product_update_view,
-    product_add_to_cart_view,
+    ProductListView,
+    ProductDetailView,
+    ProductCreateView,
+    ProductUpdateView,
+    AddToCartView,
     product_delete_view,
     product_like_view,
     product_unlike_view
@@ -14,22 +15,22 @@ app_name = 'products'
 urlpatterns = [
     path(
         '',
-        product_list_view,
+        ProductListView.as_view(),
         name='product_list_view'
     ),
     path(
         'create/',
-        product_create_view,
+        ProductCreateView.as_view(),
         name='product_create_view'
     ),
     path(
         '<int:pk>/details',
-        product_details_view,
+        ProductDetailView.as_view(),
         name='product_details_view'
     ),
     path(
-        '<int:pk>/edit',
-        product_update_view,
+        '<int:pk>/update',
+        ProductUpdateView.as_view(),
         name='product_update_view'
     ),
     path(
@@ -44,7 +45,7 @@ urlpatterns = [
     ),
     path(
         '<int:pk>/cart/add',
-        product_add_to_cart_view,
+        login_required(AddToCartView.as_view()),
         name='product_add_to_cart_view'
     ),
     path(

@@ -1,5 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.views import login_required
+from django.contrib import messages
+from django.views.generic import (
+	View,
+	ListView,
+	DetailView,
+	CreateView,
+	UpdateView
+)
 from django.contrib import messages
 from django.http import Http404
 
@@ -11,68 +20,90 @@ from cart.forms import CartForm
 
 
 # List out all products
-def product_list_view(request):
-	products = Product.objects.all()
-	context = {
-		'title': 'Products',
-		'products': products
-	}
-	return render(request, 'products/product_list.html', context)
+class ProductListView(ListView):
+	queryset = Product.objects.all()
+	context_object_name = 'products'
+
+	def get_context_data(self, **kwargs):
+		context = super(ProductListView, self).get_context_data(**kwargs)
+		context['title'] = 'Products'
+		return context
 
 
 # Products details view
-def product_details_view(request, pk):
-	product = get_object_or_404(Product, id=pk)
-	context = {
-		'title': 'Product Details',
-		'product': product
-	}
-	return render(request, 'products/product_details.html', context)
+class ProductDetailView(DetailView):
+	queryset = Product.objects.all()
+	context_object_name = 'product'
+
+	def get_context_data(self, **kwargs):
+		context = super(ProductDetailView, self).get_context_data(**kwargs)
+		context['title'] = 'Product Details'
+		return context
 
 
 # Product create view
-def product_create_view(request):
-	form = ProductForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		form.save()
-		form = ProductForm()
-	context = {
-		'title': 'Product Create',
-		'form': form
-	}
-	return render(request, 'products/product_create.html', context)
+class ProductCreateView(CreateView):
+	queryset = Product.objects.all()
+	template_name = 'products/product_create.html'
+	form_class = ProductForm
+
+	def form_valid(self, form):
+		return super(ProductCreateView, self).form_valid(form)
+
+	def get_context_data(self, **kwargs):
+		context = super(ProductCreateView, self).get_context_data(**kwargs)
+		context['title'] = 'Product Create'
+		return context
 
 
 # Product update view
-def product_update_view(request, pk):
-	return render(request, 'products/product_update.html', {})
+class ProductUpdateView(UpdateView):
+	queryset = Product.objects.all()
+	template_name = 'products/product_update.html'
+	form_class = ProductForm
+
+	def form_valid(self, form):
+		messages.success(self.request, 'Product has been updated successfully!')
+		print(form.cleaned_data)
+		return super(ProductUpdateView, self).form_valid(form)
+
+	def get_context_data(self, **kwargs):
+		context = super(ProductUpdateView, self).get_context_data(**kwargs)
+		context['title'] = 'Product Update'
+		return context
 
 
-# Product add to cart view
-@login_required()
-def product_add_to_cart_view(request, pk):
-	product = get_object_or_404(Product, id=pk)
-	form = CartForm(request.POST or None)
-	
-	if form.is_valid():
+# Product Add To Cart View
+class AddToCartView(View):
+	product_id = None
+
+	def get_object(self):
+		self.product_id = self.kwargs.get('pk')
+		return get_object_or_404(Product, pk=self.product_id)
+
+	def get(self, request, pk=None, *args, **kwargs):
+		form = CartForm()
+		context = {
+			'form': form,
+			'product': self.get_object()
+		}
+		return render(request, 'products/product_add_to_cart.html', context)
+
+	def post(self, request, pk=None, *args,**kwargs):
+		form = CartForm(request.POST)
+		if form.is_valid():
 			try:
-				cart_item = Cart.objects.get(product=pk, user=request.user)
-				if cart_item:
+				item = Cart.objects.get_cart_item(self.get_object(), request.user)
+				if item:
 					messages.error(request, 'Item is already in your cart!')
 					return redirect('/products')
 			except Cart.DoesNotExist:
 				item = form.save(commit=False)
-				item.product = product
+				item.product = self.get_object()
 				item.user = request.user
 				form.save()
 				messages.success(request, 'Item has been added to your cart!')
 				return redirect('/products')
-	
-	context = {
-		'form': form,
-		'product': product
-	}
-	return render(request, 'products/product_add_to_cart.html', context)
 
 
 # Product delete view
