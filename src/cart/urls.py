@@ -1,15 +1,17 @@
 from django.urls import path
-from .views import cart_list_view, cart_item_delete_view
+from django.contrib.auth.decorators import login_required
+from .views import CartListView, CartDeleteView
 
+app_name = 'cart'
 urlpatterns = [
     path(
         '',
-        cart_list_view,
+        login_required(CartListView.as_view()),
         name='cart_list_view'
     ),
     path(
         '<int:pk>/delete/',
-        cart_item_delete_view,
+        login_required(CartDeleteView.as_view()),
         name='cart_item_delete_view'
     )
 ]

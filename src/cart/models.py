@@ -4,6 +4,11 @@ from django.db import models
 from products.models import Product
 
 
+class CartManager(models.Manager):
+    def get_user_item(self, request_user, *args, **kwargs):
+        return self.filter(user=request_user)
+
+
 class Cart(models.Model):
     product = models.ForeignKey(
         Product,
@@ -21,3 +26,5 @@ class Cart(models.Model):
     added_at = models.DateTimeField(
         auto_now_add=True
     )
+
+    objects = CartManager()
