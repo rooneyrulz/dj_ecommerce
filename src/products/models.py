@@ -60,6 +60,13 @@ class Product(models.Model):
           kwargs={'pk': self.id}
         )
 
+class LikeManager(models.Manager):
+  def get_like(self, user, product, *args, **kwargs):
+    return self.filter(user=user, product=product)
+
+  def create_like(self, user, product, *args, **kwargs):
+    like = self.create(user=user, product=product)
+    return like.save()
 
 class Like(models.Model):
     user = models.ForeignKey(
@@ -75,3 +82,5 @@ class Like(models.Model):
     liked_at = models.DateTimeField(
       auto_now_add=True
     )
+
+    objects = LikeManager()

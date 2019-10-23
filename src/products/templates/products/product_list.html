@@ -18,12 +18,14 @@
           <div class="text-center">
             <div class="btn-group">
               <a class="btn text-primary" style="text-decoration: none" href="{{product.get_like_url}}">
+                Like
                 <i class="fas fa-thumbs-up fa-2x mr-2"></i>
                 {% if product.like_set.all.count >= 1 %}
                 {{ product.like_set.all|length }}
                 {% endif %}
               </a>
               <a class="btn text-primary" href="{{product.get_unlike_url}}">
+                Unlike
                 <i class="fas fa-thumbs-down fa-2x"></i>
               </a>
             </div>

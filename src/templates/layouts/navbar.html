@@ -7,7 +7,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      {% if request.user.is_authenticated %}
+      {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="/dashboard">Dashboard</a>
         </li>
@@ -28,8 +28,8 @@
         <a class="nav-link" href="/cart">
           <i class="fas fa-shopping-cart"></i>
           Cart
-          {% if request.user.is_authenticated %}
-            <span style="border-radius: 2rem;" class='bg-info text-light py-2 px-3'>{{ request.user.cart_set.all|length }}</span>
+          {% if user.is_authenticated %}
+            <span style="border-radius: 2rem;" class='bg-info text-light py-2 px-3'>{{ user.cart_set.all|length }}</span>
           {% endif %}
         </a>
       </li>
@@ -39,11 +39,11 @@
           User Management
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          {% if request.user.is_authenticated %}
-            {% if request.user.profile %}
-            <a class="dropdown-item" href="{{request.user.profile.get_absolute_url}}">Profile</a>
-            <a class="dropdown-item" href="{{request.user.profile.get_experience_url}}">Experiences</a>
-            <a class="dropdown-item" href="{{request.user.profile.get_education_url}}">Educations</a>
+          {% if user.is_authenticated %}
+            {% if user.profile %}
+            <a class="dropdown-item" href="{{user.profile.get_absolute_url}}">Profile</a>
+            <a class="dropdown-item" href="{{user.profile.get_experience_url}}">Experiences</a>
+            <a class="dropdown-item" href="{{user.profile.get_education_url}}">Educations</a>
             <div class="dropdown-divider"></div>
             {% endif %}
             <a class="dropdown-item" href="/users/sign-out">Logout</a>

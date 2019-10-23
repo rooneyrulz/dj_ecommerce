@@ -6,9 +6,9 @@ from .views import (
     ProductCreateView,
     ProductUpdateView,
     AddToCartView,
-    product_delete_view,
-    product_like_view,
-    product_unlike_view
+    ProductDeleteView,
+    ProductLikeView,
+    ProductUnLikeView
 )
 
 app_name = 'products'
@@ -35,12 +35,12 @@ urlpatterns = [
     ),
     path(
         '<int:pk>/like',
-        product_like_view,
+        login_required(ProductLikeView.as_view()),
         name='product_like_view'
     ),
     path(
         '<int:pk>/unlike',
-        product_unlike_view,
+        login_required(ProductUnLikeView.as_view()),
         name='product_unlike_view'
     ),
     path(
@@ -50,7 +50,7 @@ urlpatterns = [
     ),
     path(
         '<int:pk>/delete',
-        product_delete_view,
+        ProductDeleteView.as_view(),
         name='product_delete_view'
     )
 ]

@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.contrib.auth.views import login_required
 from django.contrib import messages
 from django.views.generic import (
 	View,
 	ListView,
 	DetailView,
 	CreateView,
-	UpdateView
+	UpdateView,
+	DeleteView
 )
 from django.contrib import messages
 from django.http import Http404
@@ -75,11 +75,9 @@ class ProductUpdateView(UpdateView):
 
 # Product Add To Cart View
 class AddToCartView(View):
-	product_id = None
-
 	def get_object(self):
-		self.product_id = self.kwargs.get('pk')
-		return get_object_or_404(Product, pk=self.product_id)
+		product_id = self.kwargs.get('pk')
+		return get_object_or_404(Product, pk=product_id)
 
 	def get(self, request, pk=None, *args, **kwargs):
 		form = CartForm()
@@ -107,33 +105,46 @@ class AddToCartView(View):
 
 
 # Product delete view
-def product_delete_view(request, pk):
-	return render(request, 'products/product_delete.html', {})
+class ProductDeleteView(DeleteView):
+	queryset = Product.objects.all()
+	template_name = 'products/product_delete.html'
+	context_object_name = 'product'
+	success_url = '/products'
+
+	def get_context_data(self, **kwargs):
+		context = super(ProductDeleteView, self).get_context_data(**kwargs)
+		context['title'] = 'Product Delete'
+		return context
 
 
 # Product Like View
-@login_required()
-def product_like_view(request, pk):
-	product = get_object_or_404(Product, pk=pk)
-	is_liked = Like.objects.filter(user=request.user, product=product)
-	if is_liked:
-		messages.error(request, 'Product has already been liked!')
+class ProductLikeView(View):
+	def get_object(self):
+		id = self.kwargs.get('pk')
+		return get_object_or_404(Product, pk=id)
+	
+	def get(self, request, pk=None, *args, **kwargs):
+		is_liked = Like.objects.get_like(request.user, self.get_object())
+		if is_liked:
+			messages.error(request, 'Product has already been liked!')
+			return redirect('/products')
+		like = Like.objects.create_like(request.user, self.get_object())
+		messages.success(request, 'Product has been liked!')
 		return redirect('/products')
-	like = Like.objects.create(user=request.user, product=product)
-	like.save()
-	messages.success(request, 'Product has been liked!')
-	return redirect('/products')
 
 
 # Product Like View
-@login_required()
-def product_unlike_view(request, pk):
-	product = get_object_or_404(Product, pk=pk)
-	is_liked = Like.objects.filter(user=request.user, product=product)
-	if is_liked:
-		is_liked.delete()
-		messages.success(request, 'Product has been unliked!')
+class ProductUnLikeView(View):
+	def get_object(self):
+		id = self.kwargs.get('pk')
+		return get_object_or_404(Product, pk=id)
+	
+	def get(self, request, pk=None, *args, **kwargs):
+		is_liked = Like.objects.get_like(request.user, self.get_object())
+		if is_liked:
+			is_liked.delete()
+			messages.success(request, 'Product has been unliked!')
+			return redirect('/products')
+		messages.error(request, 'Product has not been liked!')
 		return redirect('/products')
-	messages.error(request, 'Product has not been liked!')
-	return redirect('/products')
 	
