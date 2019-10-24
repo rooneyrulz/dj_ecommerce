@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
-    profile_list_view,
-    profile_detail_view,
+    ProfileListView,
+    ProfileDetailView,
     profile_create_view,
     profile_update_view,
     profile_create_experience_view,
@@ -18,7 +18,7 @@ app_name = 'profiles'
 urlpatterns = [
     path(
         '',
-        profile_list_view,
+        ProfileListView.as_view(),
         name='profile_list'
     ),
     path(
@@ -28,7 +28,7 @@ urlpatterns = [
     ),
     path(
         '<int:pk>/detail/',
-        profile_detail_view,
+        ProfileDetailView.as_view(),
         name='profile_detail'
     ),
     path(

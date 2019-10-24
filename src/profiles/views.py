@@ -1,6 +1,7 @@
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import View, ListView
 
 from .models import Profile, Experience, Education, Social
 from .forms import (
@@ -12,42 +13,60 @@ from .forms import (
 
 
 # Profiles List View
-def profile_list_view(request):
-    profiles = Profile.objects.all()
-    context = {
-      'title': 'Profiles',
-      'profiles': profiles
-    }
-    return render(request, 'profiles/profile_list.html', context)
+class ProfileListView(ListView):
+  queryset = Profile.objects.all()
+  context_object_name = 'profiles'
+
+  def get_context_data(self, **kwargs):
+    context = super(ProfileListView, self).get_context_data(**kwargs)
+    context['title'] = 'Profiles'
+    return context
 
 
 # Profile Detail View
-def profile_detail_view(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
+class ProfileDetailView(View):
+  template = 'profiles/profile_detail.html'
+  context = {
+    'title': 'Profile Details'
+  }
+  
+  def get_object(self):
+    id = self.kwargs.get('pk')
+    return get_object_or_404(Profile, pk=id)
+
+  def get(self, request, pk=None, *args, **kwargs):
     try:
-        social = Social.objects.get(profile=profile)
-        form = SocialForm(request.POST or None, instance=social)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Social links updated successfully')
-        context = {
-          'title': 'Profile Detail',
-          'profile': profile,
-          'form': form
-        }
+      social = Social.objects.get(profile=self.get_object())
+      form = SocialForm(instance=social)
+      self.context['profile'] = self.get_object()
+      self.context['form'] = form
     except Social.DoesNotExist:
-        form = SocialForm(request.POST or None)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.profile = profile
-            form.save()
-            messages.success(request, 'Social links added successfully')
-        context = {
-          'title': 'Profile Detail',
-          'profile': profile,
-          'form': form
-        }
-    return render(request, 'profiles/profile_detail.html', context)
+      form = SocialForm()
+      self.context['profile'] = self.get_object()
+      self.context['form'] = form
+    return render(request, self.template, self.context)
+
+  def post(self, request, pk=None, *args, **kwargs):
+    try:
+      social = Social.objects.get(profile=self.get_object())
+      form = SocialForm(request.POST, instance=social)
+      self.context['profile'] = self.get_object()
+      self.context['form'] = form
+      if form.is_valid():
+        form.save()
+        messages.success(request, 'Social links updated successfully')
+    except Social.DoesNotExist:
+      form = SocialForm(request.POST)
+      self.context['profile'] = self.get_object()
+      self.context['form'] = form
+      if form.is_valid():
+        obj = form.save(commit=False)
+        obj.profile = self.get_object()
+        form.save()
+        messages.success(request, 'Social links added successfully')
+    return render(request, self.template, self.context)
+
+
 
 
 # Profile Create View

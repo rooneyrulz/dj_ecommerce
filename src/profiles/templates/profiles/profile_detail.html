@@ -4,7 +4,7 @@
 {% block content %}
 <header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
   <h3 style="font-weight: bold">Profile</h3>
-  {% if request.user.is_authenticated and profile.user == request.user %}
+  {% if user.is_authenticated and profile.user == user %}
   <div class='btn-group'>
     <a href="{{profile.get_update_url}}" class="btn btn-outline-primary">Edit Profile</a>
   </div>
@@ -20,7 +20,7 @@
       <br>
       <h4>{{profile.name}}</h4>
       <p class="lead">{{profile.location}}</p>
-      {% if request.user.is_authenticated %}
+      {% if user.is_authenticated %}
       <a href="{{profile.get_experience_url}}" class="btn btn-primary">Experiences</a>
       <a href="{{profile.get_education_url}}" class="btn btn-secondary">Educations</a>
       {% endif %}
@@ -78,7 +78,7 @@
       <header style="display: flex; flex-direction: row; justify-content: space-between; align-items: center" class="">
         <h4>Follow Me</h4>
         <!-- Button trigger modal -->
-        {% if request.user.is_authenticated and profile.user == request.user %}
+        {% if user.is_authenticated and profile.user == user %}
         <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modelId">
           Social Links
         </button>
@@ -142,7 +142,7 @@
     </div>
   </div>
   <br>
-  {% if request.user.is_authenticated and profile.user == request.user %}
+  {% if user.is_authenticated and profile.user == user %}
   <br>
   <hr>
   <br>
