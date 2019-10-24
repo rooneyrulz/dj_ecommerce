@@ -1,12 +1,13 @@
 from django.urls import path
+from django.contrib.auth.decorators import login_required
 from .views import (
     ProfileListView,
     ProfileDetailView,
-    profile_create_view,
-    profile_update_view,
-    profile_create_experience_view,
-    profile_experience_list_view,
-    profile_experience_update_view,
+    ProfileCreateView,
+    ProfileUpdateView,
+    ExperienceCreateView,
+    ExperienceListView,
+    ExperienceUpdateView,
     profile_experience_delete_view,
     profile_create_education_view,
     profile_education_list_view,
@@ -23,7 +24,7 @@ urlpatterns = [
     ),
     path(
         'create/',
-        profile_create_view,
+        login_required(ProfileCreateView.as_view()),
         name='profile_create'
     ),
     path(
@@ -33,12 +34,12 @@ urlpatterns = [
     ),
     path(
         '<int:pk>/update/',
-        profile_update_view,
+        login_required(ProfileUpdateView.as_view()),
         name='profile_update'
     ),
     path(
         '<int:pk>/experiences/',
-        profile_experience_list_view,
+        login_required(ExperienceListView.as_view()),
         name='profile_experience_list'
     ),
     path(
@@ -48,12 +49,12 @@ urlpatterns = [
     ),
     path(
         '<int:pk>/experiences/create/',
-        profile_create_experience_view,
+        login_required(ExperienceCreateView.as_view()),
         name='profile_create_experience'
     ),
     path(
         'experiences/<int:pk>/update/',
-        profile_experience_update_view,
+        login_required(ExperienceUpdateView.as_view()),
         name='profile_experience_update'
     ),
     path(

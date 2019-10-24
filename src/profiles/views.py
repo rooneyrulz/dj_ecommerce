@@ -1,7 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.contrib import messages
-from django.views.generic import View, ListView
+from django.views.generic import (
+  View,
+  ListView,
+  CreateView,
+  UpdateView
+)
 
 from .models import Profile, Experience, Education, Social
 from .forms import (
@@ -29,7 +35,7 @@ class ProfileDetailView(View):
   context = {
     'title': 'Profile Details'
   }
-  
+
   def get_object(self):
     id = self.kwargs.get('pk')
     return get_object_or_404(Profile, pk=id)
@@ -67,107 +73,115 @@ class ProfileDetailView(View):
     return render(request, self.template, self.context)
 
 
-
-
 # Profile Create View
-@login_required()
-def profile_create_view(request):
-    # if request.user.profile:
-    #     return redirect(request.user.profile.get_absolute_url())
-    form = ProfileForm(
-      request.POST or None,
-      request.FILES or None
-    )
-    if form.is_valid():
-        profile = form.save(commit=False)
-        profile.user = request.user
-        form.save()
-        messages.success(request, 'Profile created successfully!')
-        return redirect(request.user.profile.get_absolute_url())
-    context = {
-      'title': 'Create Profile',
-      'form': form
-    }
-    return render(request, 'profiles/profile_create.html', context)
+class ProfileCreateView(CreateView):
+  queryset = Profile.objects.all()
+  template_name = 'profiles/profile_create.html'
+  form_class = ProfileForm
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    messages.success(self.request, 'Profile created successfully!')
+    return super(ProfileCreateView, self).form_valid(form)
+
+  def get_context_data(self, **kwargs):
+    context = super(ProfileCreateView, self).get_context_data(**kwargs)
+    context['title'] = 'Profile Create'
 
 
-# Profile Create View
-@login_required()
-def profile_update_view(request, pk):
-    profile = get_object_or_404(Profile, pk=pk, user=request.user)
-    form = ProfileForm(
-      request.POST or None,
-      request.FILES or None,
-      instance=request.user.profile
-    )
-    if form.is_valid():
-        profile = form.save(commit=False)
-        form.save()
-        messages.success(request, 'Profile updated successfully!')
-        return redirect(profile.get_absolute_url())
-    context = {
-      'title': 'Update Profile',
-      'form': form,
-      'profile': profile
-    }
-    return render(request, 'profiles/profile_update.html', context)
+# Profile Update View
+class ProfileUpdateView(UpdateView):
+  queryset = Profile.objects.all()
+  template_name = 'profiles/profile_update.html'
+  form_class = ProfileForm
+
+  def get_object(self):
+    id = self.kwargs.get('pk')
+    return get_object_or_404(Profile, pk=id, user=self.request.user)
+  
+  def form_valid(self, form):
+    messages.success(self.request, 'Profile updated successfully!')
+    return super(ProfileUpdateView, self).form_valid(form)
+
+  def get_context_data(self, **kwargs):
+    context = super(ProfileUpdateView, self).get_context_data(**kwargs)
+    context['title'] = 'Profile Update'
+    return context 
 
 
 # Profile Create Experience View
-@login_required()
-def profile_create_experience_view(request, pk):
-    profile = get_object_or_404(Profile, pk=pk, user=request.user)
-    form = ExperienceForm(request.POST or None)
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.profile = profile
-        form.save()
-        messages.success(request, f'An experience cretated for {request.user}')
-        return redirect(profile.get_experience_url())
-    context = {
-      'title': 'Experiences',
-      'form': form
-    }
-    return render(request, 'profiles/profile_create_experience.html', context)
+class ExperienceCreateView(CreateView):
+  queryset = Experience.objects.all()
+  template_name = 'profiles/profile_create_experience.html'
+  form_class = ExperienceForm
+
+  def get_object(self):
+    id = self.kwargs.get('pk')
+    return get_object_or_404(Profile, pk=id, user=self.request.user)
+
+  def form_valid(self, form):
+    if self.get_object():
+      form.instance.profile = self.get_object()
+      return super(ExperienceCreateView, self).form_valid(form)
+
+  def get_context_data(self, **kwargs):
+    context = super(ExperienceCreateView, self).get_context_data(**kwargs)
+    context['title'] = 'Experience Create'
+    return context
+
+  def get_success_url(self):
+    messages.success(self.request, f'An experience cretated for {self.request.user}')
+    return self.get_object().get_experience_url()
 
 
 # Profile Experiences List View
-@login_required()
-def profile_experience_list_view(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
-    experiences = profile.experience_set.all()
-    if not experiences and profile.user == request.user:
-        return redirect(f'{profile.get_experience_url()}create')
-    context = {
-      'title': 'Experiences',
-      'experiences': experiences,
-      'profile': profile
-    }
+class ExperienceListView(View):
+  def get_object(self):
+    return get_object_or_404(Profile, pk=self.kwargs.get('pk'))
+
+  def get(self, request, pk=None, *args, **kwargs):
+    if self.get_object():
+      experiences = self.get_object().experience_set.all()
+      if not experiences and self.get_object().user == request.user:
+        return redirect(f'{self.get_object().get_experience_url()}create')
+      context = {
+        'title': 'Experiences',
+        'experiences': experiences,
+        'profile': self.get_object()
+      }
     return render(request, 'profiles/profile_experience_list.html', context)
 
 
 # Profile Experience Update View
-@login_required()
-def profile_experience_update_view(request, pk):
-    profile = get_object_or_404(Profile, user=request.user)
-    experience = get_object_or_404(
-      Experience,
-      pk=pk,
-      profile=request.user.profile
-    )
-    form = ExperienceForm(
-      request.POST or None,
-      instance=experience
-    )
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'An experience updated!')
-        return redirect(profile.get_experience_url())
-    context = {
-      'title': 'Update Experience',
-      'form': form
-    }
-    return render(request, 'profiles/profile_experience_update.html', context)
+class ExperienceUpdateView(UpdateView):
+  queryset = Experience.objects.all()
+  template_name = 'profiles/profile_experience_update.html'
+  form_class = ExperienceForm
+  profile = None
+
+  def get_object(self):
+    self.profile = get_object_or_404(Profile, user=self.request.user)
+    if self.profile is not None:
+      experience = get_object_or_404(
+        Experience,
+        pk=self.kwargs.get('pk'),
+        profile=self.request.user.profile
+      )
+      return experience
+    return profile
+  
+  def form_valid(self, form):
+    return super(ExperienceUpdateView, self).form_valid(form)
+  
+  def get_context_data(self, **kwargs):
+    context = super(ExperienceUpdateView, self).get_context_data(**kwargs)
+    context['title'] = 'Experience Update'
+    return context
+  
+  def get_success_url(self):
+    messages.success(self.request, 'An experience updated!')
+    return self.profile.get_experience_url()
+
 
 
 # Profile Experience Delete View
