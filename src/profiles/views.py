@@ -6,7 +6,8 @@ from django.views.generic import (
   View,
   ListView,
   CreateView,
-  UpdateView
+  UpdateView,
+  DeleteView
 )
 
 from .models import Profile, Experience, Education, Social
@@ -91,7 +92,6 @@ class ProfileCreateView(CreateView):
 
 # Profile Update View
 class ProfileUpdateView(UpdateView):
-  queryset = Profile.objects.all()
   template_name = 'profiles/profile_update.html'
   form_class = ProfileForm
 
@@ -154,7 +154,6 @@ class ExperienceListView(View):
 
 # Profile Experience Update View
 class ExperienceUpdateView(UpdateView):
-  queryset = Experience.objects.all()
   template_name = 'profiles/profile_experience_update.html'
   form_class = ExperienceForm
   profile = None
@@ -183,100 +182,120 @@ class ExperienceUpdateView(UpdateView):
     return self.profile.get_experience_url()
 
 
-
 # Profile Experience Delete View
-@login_required()
-def profile_experience_delete_view(request, pk):
-    profile = get_object_or_404(Profile, user=request.user)
-    experience = get_object_or_404(Experience, pk=pk)
-    if request.method == 'POST':
-        experience.delete()
-        messages.success(request, 'An experience deleted!')
-        return redirect(profile.get_experience_url())
-    context = {
-      'title': 'Experience Delete',
-      'profile': profile,
-      'exp': experience
-    }
-    return render(request, 'profiles/profile_experience_delete.html', context)
+class ExperienceDeleteView(DeleteView):
+  template_name = 'profiles/profile_experience_delete.html'
+  context_object_name = 'exp'
+  profile = None
+
+  def get_object(self):
+    self.profile = get_object_or_404(Profile, user=self.request.user)
+    if self.profile is not None:
+      experience = get_object_or_404(Experience, pk=self.kwargs.get('pk'))
+      return experience
+    return self.profile
+
+  def get_context_data(self, **kwargs):
+    context = super(ExperienceDeleteView, self).get_context_data(**kwargs)
+    context['title'] = 'Experience Delete'
+    context['profile'] = self.profile
+    return context
+  
+  def get_success_url(self):
+    messages.success(self.request, 'An experience deleted!')
+    return self.profile.get_experience_url()
 
 
 # Profile Education List View
-@login_required()
-def profile_education_list_view(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
-    educations = profile.education_set.all()
-    if not educations and profile.user == request.user:
-        return redirect(f'{profile.get_education_url()}create')
-    context = {
-      'title': 'Educations',
-      'educations': educations,
-      'profile': profile
-    }
+class EducationListView(View):
+  def get_object(self):
+    return get_object_or_404(Profile, pk=self.kwargs.get('pk'))
+
+  def get(self, request, pk=None, *args, **kwargs):
+    if self.get_object():
+      educations = self.get_object().education_set.all()
+      if not educations and self.get_object().user == self.request.user:
+        return redirect(f'{self.get_object().get_education_url()}create')
+      context = {
+        'title': 'Educations',
+        'educations': educations,
+        'profile': self.get_object()
+      }
     return render(request, 'profiles/profile_education_list.html', context)
 
 
 # Profile Create Education View
-@login_required()
-def profile_create_education_view(request, pk):
-    profile = get_object_or_404(
-      Profile,
-      pk=pk,
-      user=request.user
-    )
-    form = EducationForm(request.POST or None)
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.profile = profile
-        form.save()
-        messages.success(request, f'An education created for {request.user}')
-        return redirect(profile.get_education_url())
-    context = {
-      'title': 'Educations',
-      'form': form
-    }
-    return render(request, 'profiles/profile_create_education.html', context)
+class EducationCreateView(CreateView):
+  queryset = Education.objects.all()
+  template_name = 'profiles/profile_create_education.html'
+  form_class = EducationForm
+
+  def get_object(self):
+    id = self.kwargs.get('pk')
+    return get_object_or_404(Profile, pk=id, user=self.request.user)
+
+  def form_valid(self, form):
+    if self.get_object():
+      form.instance.profile = self.get_object()
+      return super(EducationCreateView, self).form_valid(form)
+
+  def get_context_data(self, **kwargs):
+    context = super(EducationCreateView, self).get_context_data(**kwargs)
+    context['title'] = 'Education Create'
+    return context
+
+  def get_success_url(self):
+    messages.success(self.request, f'An education cretated for {self.request.user}')
+    return self.get_object().get_education_url()
 
 
 # Profile Education Update View
-@login_required()
-def profile_education_update_view(request, pk):
-    profile = get_object_or_404(Profile, user=request.user)
-    education = get_object_or_404(
-      Education,
-      pk=pk,
-      profile=request.user.profile
-    )
-    form = EducationForm(request.POST or None, instance=education)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'An education updated!')
-        return redirect(profile.get_education_url())
-    context = {
-      'title': 'Educations',
-      'form': form,
-      'edu': education,
-      'profile': profile
-    }
-    return render(request, 'profiles/profile_education_update.html', context)
+class EducationUpdateView(UpdateView):
+  template_name = 'profiles/profile_education_update.html'
+  form_class = EducationForm
+  profile = None
+
+  def get_object(self):
+    self.profile = get_object_or_404(Profile, user=self.request.user)
+    if self.profile is not None:
+      education = get_object_or_404(
+        Education,
+        pk=self.kwargs.get('pk'),
+        profile=self.request.user.profile
+      )
+      return education
+    return profile
+  
+  def get_context_data(self, **kwargs):
+    context = super(EducationUpdateView, self).get_context_data(**kwargs)
+    context['title'] = 'Education Update'
+    return context
+  
+  def get_success_url(self):
+    messages.success(self.request, 'An education updated!')
+    return self.profile.get_education_url()
 
 
 # Profile Education Delete View
-@login_required()
-def profile_education_delete_view(request, pk):
-    profile = get_object_or_404(Profile, user=request.user)
-    education = get_object_or_404(
-      Education,
-      pk=pk,
-      profile=request.user.profile
-    )
-    if request.method == 'POST':
-        education.delete()
-        messages.success(request, 'An education deleted!')
-        return redirect(profile.get_education_url())
-    context = {
-      'title': 'Delete Education',
-      'profile': profile,
-      'edu': education
-    }
-    return render(request, 'profiles/profile_education_delete.html', context)
+class EducationDeleteView(DeleteView):
+  template_name = 'profiles/profile_education_delete.html'
+  context_object_name = 'edu'
+  profile = None
+
+  def get_object(self):
+    self.profile = get_object_or_404(Profile, user=self.request.user)
+    if self.profile is not None:
+      education = get_object_or_404(Education, pk=self.kwargs.get('pk'))
+      return education
+    return self.profile
+
+  def get_context_data(self, **kwargs):
+    context = super(EducationDeleteView, self).get_context_data(**kwargs)
+    context['title'] = 'Education Delete'
+    context['profile'] = self.profile
+    return context
+  
+  def get_success_url(self):
+    messages.success(self.request, 'An education deleted!')
+    return self.profile.get_education_url()
+

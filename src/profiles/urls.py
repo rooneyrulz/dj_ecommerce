@@ -8,11 +8,11 @@ from .views import (
     ExperienceCreateView,
     ExperienceListView,
     ExperienceUpdateView,
-    profile_experience_delete_view,
-    profile_create_education_view,
-    profile_education_list_view,
-    profile_education_update_view,
-    profile_education_delete_view
+    ExperienceDeleteView,
+    EducationCreateView,
+    EducationListView,
+    EducationUpdateView,
+    EducationDeleteView
 )
 
 app_name = 'profiles'
@@ -44,7 +44,7 @@ urlpatterns = [
     ),
     path(
         '<int:pk>/educations/',
-        profile_education_list_view,
+        login_required(EducationListView.as_view()),
         name='profile_education_list'
     ),
     path(
@@ -59,22 +59,22 @@ urlpatterns = [
     ),
     path(
         'experiences/<int:pk>/delete/',
-        profile_experience_delete_view,
+        login_required(ExperienceDeleteView.as_view()),
         name='profile_experience_delete'
     ),
     path(
         '<int:pk>/educations/create/',
-        profile_create_education_view,
+        login_required(EducationCreateView.as_view()),
         name='profile_create_education'
     ),
     path(
         'educations/<int:pk>/update/',
-        profile_education_update_view,
+        login_required(EducationUpdateView.as_view()),
         name='profile_education_update'
     ),
     path(
         'educations/<int:pk>/delete/',
-        profile_education_delete_view,
+        login_required(EducationDeleteView.as_view()),
         name='profile_education_delete'
     ),
 ]
